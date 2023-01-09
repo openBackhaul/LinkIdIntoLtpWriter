@@ -3,7 +3,7 @@ Delete these statements:
 - Fill in the Location, Description and Relevance below (check existing repositories as templates)
 
 Delete this link at the end of the specification process:  
-- [Roadmap to Specification](../../issues/1)
+- [Roadmap to Specification](../../issues/8)
 
 # LinkIdIntoLtpWriter
 
