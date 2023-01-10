@@ -1,7 +1,3 @@
-Delete these statements:  
-- This repository is a template for specifying applications for the MW SDN application layer  
-- Fill in the Location, Description and Relevance below (check existing repositories as templates)
-
 Delete this link at the end of the specification process:  
 - [Roadmap to Specification](../../issues/8)
 
@@ -22,4 +18,4 @@ If the LinkIdIntoLtpWriter would write wrong LinkIDs into devices, other applica
 - [Implementation](./server/)
 
 ### Comments
-./.
+This application will be specified during training for ApplicationOwner.

@@ -1,20 +1,20 @@
-# OfficialApplicationName Specification
+# LinkIdIntoLtpWriter Specification
 
 ### ServiceList
-- [ApplicationPattern+services](./ApplicationPattern+services.yaml)
+- [LinkIdIntoLtpWriter+services](./LinkIdIntoLtpWriter+services.yaml)
 
 ### ProfileList and ProfileInstanceList
-- [ApplicationPattern+profiles](./ApplicationPattern+profiles.yaml)
-- [ApplicationPattern+profileInstances](./ApplicationPattern+profileInstances.yaml)
+- [LinkIdIntoLtpWriter+profiles](./LinkIdIntoLtpWriter+profiles.yaml)
+- [LinkIdIntoLtpWriter+profileInstances](./LinkIdIntoLtpWriter+profileInstances.yaml)
 
 ### ForwardingList
-- [ApplicationPattern+forwardings](./ApplicationPattern+forwardings.yaml)
+- [LinkIdIntoLtpWriter+forwardings](./LinkIdIntoLtpWriter+forwardings.yaml)
 
 ### Open API specification (Swagger)
-- [ApplicationPattern](./ApplicationPattern.yaml)
+- [LinkIdIntoLtpWriter](./LinkIdIntoLtpWriter.yaml)
 
 ### CONFIGfile (JSON)
-- [ApplicationPattern+config](./ApplicationPattern+config.json)
+- [LinkIdIntoLtpWriter+config](./LinkIdIntoLtpWriter+config.json)
 
 ### Comments
 ./.

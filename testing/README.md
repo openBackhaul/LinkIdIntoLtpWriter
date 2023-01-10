@@ -1,10 +1,10 @@
-# OfficialApplicationName Testing
+# LinkIdIntoLtpWriter Testing
 
 ### Test Cases (Postman Export)
-- [ApplicationPattern+testcases](./ApplicationPattern+testcases.json)
+- [LinkIdIntoLtpWriter+testcases](./LinkIdIntoLtpWriter+testcases.json)
 
 ### DATAfile
-- to be provided
+- [LinkIdIntoLtpWriter+data](./LinkIdIntoLtpWriter+data.json)
 
 ### Comments
 ./.
