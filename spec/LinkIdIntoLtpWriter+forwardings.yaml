@@ -83,7 +83,14 @@ forwardings:
         uuid: lilw-1-0-0-op-s-bs-004
       - server-name: /docs
         uuid: lilw-1-0-0-op-s-bs-005
-      ## TODO: All service requests to be complemented
+      - server-name: /v1/add-link-id
+        uuid: lilw-1-0-0-op-s-is-000
+      - server-name: /v1/refresh-link-id
+        uuid: lilw-1-0-0-op-s-is-001
+      - server-name: /v1/delete-link-id
+        uuid: lilw-1-0-0-op-s-is-002
+      - server-name: /v1/get-logged-errors
+        uuid: lilw-1-0-0-op-s-is-003
     consequent-requests:
       - client-name: ExecutionAndTraceLog://v1/record-service-request
         uuid: lilw-1-0-0-op-c-bs-eatl-2-0-1-000
