@@ -463,7 +463,378 @@ paths:
                   $ref: '#/components/responses/responseForErroredServiceRequests'
                 default:
                   $ref: '#/components/responses/responseForErroredServiceRequests'
+  /v1/add-link-id:
+    parameters:
+      - $ref: '#/components/parameters/user'
+      - $ref: '#/components/parameters/originator'
+      - $ref: '#/components/parameters/x-correlator'
+      - $ref: '#/components/parameters/trace-indicator'
+      - $ref: '#/components/parameters/customer-journey'
+    post:
+      operationId: add-link-id
+      summary: 'Add a link-id to LTP'
+      tags:
+        - IndividualServices
+      security:
+        - apiKeyAuth: []
+      requestBody:
+        required: true
+        content:
+          application/json:
+            schema:
+              type: object
+              required:
+                - UserLinkId
+                - NodeId
+                - SlotPort
+              properties:
+                UserLinkId:
+                  type: string
+                  description: >
+                    'User-Link-ID of MW-Link'
+                NodeId:
+                  type: string
+                  description: >
+                    'NodeId of Device (25er-Number)'
+                SlotPort:
+                  type: string
+                  description: >
+                    'Slot and Port number'
+              example:
+                UserLinkId: '305551234'
+                NodeId: '305251234'
+                SlotPort: '001.001'
+      responses:
+        '200':
+          description: 'UserLinkId is written to device'
+          headers:
+            x-correlator:
+              schema:
+                type: string
+                example: '550e8400-e29b-11d4-a716-446655440000'
+              description: 'UUID for the service execution flow that allows to correlate requests and responses. Its value must be identical at the response compared with its corresponding request'
+            exec-time:
+              schema:
+                type: integer
+                example: 1100
+              description: 'Value written by the service provider, reporting the total elapsed time for the execution, including all the additional processing needed to retrieve the data from the backend service. Expressed in milliseconds'
+            backend-time:
+              schema:
+                type: integer
+                example: 850
+              description: 'Value written by the service provider, reporting the elapsed time for data retrieval from the backend (service invocation, database access…). Expressed in milliseconds'
+            life-cycle-state:
+              schema:
+                type: string
+                enum:
+                  - 'EXPERIMENTAL'
+                  - 'OPERATIONAL'
+                  - 'DEPRECATED'
+                  - 'OBSOLETE'
+                  - 'UNKNOWN'
+                  - 'NOT_YET_DEFINED'
+                example: 'EXPERIMENTAL'
+              description: >
+                  'Life cycle state of the consumed service
+                  find in [/core-model-1-4:control-construct/logical-termination-point=matr-1-0-0-op-s-is-001/layer-protocol=0/operation-server-interface-1-0:operation-server-interface-pac/operation-server-interface-configuration/life-cycle-state]'
+        '400':
+          $ref: '#/components/responses/responseForErroredServiceRequests'
+        '401':
+          $ref: '#/components/responses/responseForErroredServiceRequests'
+        '403':
+          $ref: '#/components/responses/responseForErroredServiceRequests'
+        '404':
+          $ref: '#/components/responses/responseForErroredServiceRequests'
+        '500':
+          $ref: '#/components/responses/responseForErroredServiceRequests'
+        default:
+          $ref: '#/components/responses/responseForErroredServiceRequests'
+  /v1/delete-link-id:
+    parameters:
+      - $ref: '#/components/parameters/user'
+      - $ref: '#/components/parameters/originator'
+      - $ref: '#/components/parameters/x-correlator'
+      - $ref: '#/components/parameters/trace-indicator'
+      - $ref: '#/components/parameters/customer-journey'
+    post:
+      operationId: delete-link-id
+      summary: 'Deletes a link-id from LTP'
+      tags:
+        - IndividualServices
+      security:
+        - apiKeyAuth: []
+      requestBody:
+        required: true
+        content:
+          application/json:
+            schema:
+              type: object
+              required:
+                - UserLinkId
+                - NodeId
+                - SlotPort
+              properties:
+                UserLinkId:
+                  type: string
+                  description: >
+                    'User-Link-ID of MW-Link'
+                NodeId:
+                  type: string
+                  description: >
+                    'NodeId of Device (25er-Number)'
+                SlotPort:
+                  type: string
+                  description: >
+                    'Slot and Port number'
+              example:
+                UserLinkId: '305551234'
+                NodeId: '305251234'
+                SlotPort: '001.001'
+      responses:
+        '200':
+          description: 'UserLinkId is deleted from device'
+          headers:
+            x-correlator:
+              schema:
+                type: string
+                example: '550e8400-e29b-11d4-a716-446655440000'
+              description: 'UUID for the service execution flow that allows to correlate requests and responses. Its value must be identical at the response compared with its corresponding request'
+            exec-time:
+              schema:
+                type: integer
+                example: 1100
+              description: 'Value written by the service provider, reporting the total elapsed time for the execution, including all the additional processing needed to retrieve the data from the backend service. Expressed in milliseconds'
+            backend-time:
+              schema:
+                type: integer
+                example: 850
+              description: 'Value written by the service provider, reporting the elapsed time for data retrieval from the backend (service invocation, database access…). Expressed in milliseconds'
+            life-cycle-state:
+              schema:
+                type: string
+                enum:
+                  - 'EXPERIMENTAL'
+                  - 'OPERATIONAL'
+                  - 'DEPRECATED'
+                  - 'OBSOLETE'
+                  - 'UNKNOWN'
+                  - 'NOT_YET_DEFINED'
+                example: 'EXPERIMENTAL'
+              description: >
+                  'Life cycle state of the consumed service
+                  find in [/core-model-1-4:control-construct/logical-termination-point=matr-1-0-0-op-s-is-001/layer-protocol=0/operation-server-interface-1-0:operation-server-interface-pac/operation-server-interface-configuration/life-cycle-state]'
+        '400':
+          $ref: '#/components/responses/responseForErroredServiceRequests'
+        '401':
+          $ref: '#/components/responses/responseForErroredServiceRequests'
+        '403':
+          $ref: '#/components/responses/responseForErroredServiceRequests'
+        '404':
+          $ref: '#/components/responses/responseForErroredServiceRequests'
+        '500':
+          $ref: '#/components/responses/responseForErroredServiceRequests'
+        default:
+          $ref: '#/components/responses/responseForErroredServiceRequests'
+     
+  /v1/refresh-link-id:
+    parameters:
+      - $ref: '#/components/parameters/user'
+      - $ref: '#/components/parameters/originator'
+      - $ref: '#/components/parameters/x-correlator'
+      - $ref: '#/components/parameters/trace-indicator'
+      - $ref: '#/components/parameters/customer-journey'
+    post:
+      operationId: refresh-link-id
+      summary: 'Push given link-id in first position of hygiene queue'
+      tags:
+        - IndividualServices
+      security:
+        - apiKeyAuth: []
+      requestBody:
+        required: true
+        content:
+          application/json:
+            schema:
+              type: object
+              required:
+                - UserLinkId
+              properties:
+                UserLinkId:
+                  type: string
+                  description: >
+                    'User-Link-ID of MW-Link'
+              example:
+                UserLinkId: '305551234'
+      responses:
+        '200':
+          description: 'UserLinkId is pushed'
+          headers:
+            x-correlator:
+              schema:
+                type: string
+                example: '550e8400-e29b-11d4-a716-446655440000'
+              description: 'UUID for the service execution flow that allows to correlate requests and responses. Its value must be identical at the response compared with its corresponding request'
+            exec-time:
+              schema:
+                type: integer
+                example: 1100
+              description: 'Value written by the service provider, reporting the total elapsed time for the execution, including all the additional processing needed to retrieve the data from the backend service. Expressed in milliseconds'
+            backend-time:
+              schema:
+                type: integer
+                example: 850
+              description: 'Value written by the service provider, reporting the elapsed time for data retrieval from the backend (service invocation, database access…). Expressed in milliseconds'
+            life-cycle-state:
+              schema:
+                type: string
+                enum:
+                  - 'EXPERIMENTAL'
+                  - 'OPERATIONAL'
+                  - 'DEPRECATED'
+                  - 'OBSOLETE'
+                  - 'UNKNOWN'
+                  - 'NOT_YET_DEFINED'
+                example: 'EXPERIMENTAL'
+              description: >
+                  'Life cycle state of the consumed service
+                  find in [/core-model-1-4:control-construct/logical-termination-point=matr-1-0-0-op-s-is-001/layer-protocol=0/operation-server-interface-1-0:operation-server-interface-pac/operation-server-interface-configuration/life-cycle-state]'
+        '400':
+          $ref: '#/components/responses/responseForErroredServiceRequests'
+        '401':
+          $ref: '#/components/responses/responseForErroredServiceRequests'
+        '403':
+          $ref: '#/components/responses/responseForErroredServiceRequests'
+        '404':
+          $ref: '#/components/responses/responseForErroredServiceRequests'
+        '500':
+          $ref: '#/components/responses/responseForErroredServiceRequests'
+        default:
+          $ref: '#/components/responses/responseForErroredServiceRequests'
 
+  /v1/get-logged-errors:
+    parameters:
+      - $ref: '#/components/parameters/user'
+      - $ref: '#/components/parameters/originator'
+      - $ref: '#/components/parameters/x-correlator'
+      - $ref: '#/components/parameters/trace-indicator'
+      - $ref: '#/components/parameters/customer-journey'
+    post:
+      operationId: get-logged-errors
+      summary: 'returns a list of all errors in given time periode'
+      tags:
+        - IndividualServices
+      security:
+        - apiKeyAuth: []
+      requestBody:
+        required: true
+        content:
+          application/json:
+            schema:
+              type: object
+              required:
+                - from
+                - to
+              properties:
+                from:
+                  type: date-time
+                  description: >
+                    'Date from'
+                to:
+                  type: date-time
+                  description: >
+                    'Date to'
+              example:
+                from: '2023-01-01T01:00:00Z'
+                to: '2023-01-31T23:00:00Z'
+      responses:
+        '200':
+          description: 'Returns list of errors'
+          content:
+            application/json:
+              schema:
+                type: array
+                items:
+                  type: object
+                  properties:
+                    user-link-id:
+                      type: string
+                      description: >
+                        'user-link-id of mw-link^'
+                    node-id:
+                      type: string
+                      description: >
+                        'node-id of device'
+                    slot-port:
+                      type: string
+                      description: >
+                        'slot and port of device'
+                    timestamp:
+                      type: date-time
+                      description: >
+                        'timestamp of error event'
+                    error-code:
+                      type: integer
+                      description: >
+                        'error code'
+                    error-message:
+                      type: string
+                      description: >
+                        'error-message'
+                example:
+                  - user-link-id: '305551234'
+                    node-id: '305251234'
+                    slot-port: '001.001'
+                    timestamp: '2023-01-01T01:00:00Z'
+                    error-code: 5
+                    error-message: 'device not reachable'
+                  - user-link-id: '305551234'
+                    node-id: '305251234'
+                    slot-port: '001.001'
+                    timestamp: '2023-01-01T01:00:00Z'
+                    error-code: 5
+                    error-message: 'device not reachable'
+          headers:
+            x-correlator:
+              schema:
+                type: string
+                example: '550e8400-e29b-11d4-a716-446655440000'
+              description: 'UUID for the service execution flow that allows to correlate requests and responses. Its value must be identical at the response compared with its corresponding request'
+            exec-time:
+              schema:
+                type: integer
+                example: 1100
+              description: 'Value written by the service provider, reporting the total elapsed time for the execution, including all the additional processing needed to retrieve the data from the backend service. Expressed in milliseconds'
+            backend-time:
+              schema:
+                type: integer
+                example: 850
+              description: 'Value written by the service provider, reporting the elapsed time for data retrieval from the backend (service invocation, database access…). Expressed in milliseconds'
+            life-cycle-state:
+              schema:
+                type: string
+                enum:
+                  - 'EXPERIMENTAL'
+                  - 'OPERATIONAL'
+                  - 'DEPRECATED'
+                  - 'OBSOLETE'
+                  - 'UNKNOWN'
+                  - 'NOT_YET_DEFINED'
+                example: 'EXPERIMENTAL'
+              description: >
+                  'Life cycle state of the consumed service
+                  find in [/core-model-1-4:control-construct/logical-termination-point=matr-1-0-0-op-s-is-001/layer-protocol=0/operation-server-interface-1-0:operation-server-interface-pac/operation-server-interface-configuration/life-cycle-state]'
+        '400':
+          $ref: '#/components/responses/responseForErroredServiceRequests'
+        '401':
+          $ref: '#/components/responses/responseForErroredServiceRequests'
+        '403':
+          $ref: '#/components/responses/responseForErroredServiceRequests'
+        '404':
+          $ref: '#/components/responses/responseForErroredServiceRequests'
+        '500':
+          $ref: '#/components/responses/responseForErroredServiceRequests'
+        default:
+          $ref: '#/components/responses/responseForErroredServiceRequests'
 ########################################################################################################################
 #   Service Layer - Basic Part - Following paths must be copied into every application
 ########################################################################################################################
@@ -1162,6 +1533,7 @@ paths:
                   $ref: '#/components/responses/responseForErroredServiceRequests'
                 default:
                   $ref: '#/components/responses/responseForErroredServiceRequests'
+                                                                                  
   /v1/redirect-service-request-information:
     parameters:
       - $ref: '#/components/parameters/user'
@@ -3557,6 +3929,11 @@ paths:
                     - label: 'Inform about Application'
                       request: 'https://1.1.4.1:4001/v1/inform-about-application-in-generic-representation'
                       display-in-new-browser-window: false
+                                                                                            
+                                                                                                                                                                                                                                            
+                                       
+                                                        
+                                                          
           headers:
             x-correlator:
               schema:
@@ -5827,6 +6204,7 @@ paths:
                       value-reference:
                         type: string
                     example:
+                                             
                       value-reference: '/core-model-1-4:control-construct/logical-termination-point=lilw-1-0-0-http-s-000/layer-protocol=0/http-server-interface-1-0:http-server-interface-pac/http-server-interface-capability/application-name'
         '400':
           $ref: '#/components/responses/responseForErroredOamRequests'
@@ -5867,6 +6245,7 @@ paths:
                     value-reference:
                       type: string
                   example:
+                                         
                     value-reference: '/core-model-1-4:control-construct/logical-termination-point=lilw-1-0-0-http-s-000/layer-protocol=0/http-server-interface-1-0:http-server-interface-pac/http-server-interface-capability/application-name'
       responses:
         '204':
