@@ -1,0 +1,39 @@
+
+@startuml im002_overviewHygieneQueueExecution
+
+title Overview hygiene queue execution
+
+participant "Hygiene queue" as LILW_hygieneQueue
+participant "MWDI:///.../control-construct={mountName}/logical-termination-point={uuid}" as MWDI
+participant "MWDG://.../logical-termination-point={uuid}/ltp-augment-1-0:ltp-augment-pac/external-label" as MWDG
+
+activate LILW_hygieneQueue #LightGrey
+note over of LILW_hygieneQueue : process x top entries concurrently (x is slidingWindowSize-profile).\nExecute the following for each entry seperately:
+
+LILW_hygieneQueue -> LILW_hygieneQueue : if LTPs not yet known for link: find LTPs for sites A/B \nsee graph "Hygiene queue - evaluation of LTPs for link"
+
+note over of LILW_hygieneQueue : if not LTPs for both sites found: \nskip this entry, log error and set active entry to bottom of queue
+
+group HygieneQueueExecutionCausesReadingOfExternalLabel
+    LILW_hygieneQueue -> MWDI : A/B: read current external-label of LTPs {link-id} with fields filter
+    activate MWDI #LightGrey
+    MWDI --> LILW_hygieneQueue : write result into log
+    deactivate MWDI #LightGrey
+end
+
+note left LILW_hygieneQueue: A/B: if external-label of LTP is different to new link-id:
+
+group HygieneQueueExecutionCausesWritingOfLinkIdToLtpOfDevice
+    LILW_hygieneQueue -> MWDG : write link-id + side-name to LTP as external-label {mountName, uuid, link-id}
+    activate MWDG #LightGrey
+    MWDG --> LILW_hygieneQueue : wait for response
+    deactivate MWDG #LightGrey
+end
+
+note left of LILW_hygieneQueue : log result of writing process
+note left of LILW_hygieneQueue : save LTP infos for link-id in queue
+note left of LILW_hygieneQueue : set active entry to bottom of queue
+note left of LILW_hygieneQueue : wait for next processing loop (wait hygieneLoopWaitTimeSeconds-profile seconds)
+
+@enduml
+

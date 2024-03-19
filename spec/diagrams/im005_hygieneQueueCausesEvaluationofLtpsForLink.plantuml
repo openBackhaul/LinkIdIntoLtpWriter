@@ -1,0 +1,94 @@
+
+@startuml im005_hygieneQueueCausesEvaluationofLtpsForLink
+
+title Hygiene queue - evaluation of LTPs for link
+
+participant "Hygiene queue" as LILW_hygieneQueue
+participant "MWDI://.../control-construct={mountName}?fields=logical-termination-point(uuid;server-ltp;client-ltp;layer-protocol(local-id;layer-protocol-name);external-label)" as MWDI
+participant "MWDI://.../control-construct={mountName}/logical-termination-point={uuid}/layer-protocol={localId}/air-interface-2-0:air-interface-pac/air-interface-status" as MWDI2
+participant "MWDG" as MWDG
+
+note over LILW_hygieneQueue
+  if LTPs are unknown for link-id
+end note
+
+group HygieneQueueExecutionCausesRequestForLtpsOfMount
+    LILW_hygieneQueue -> MWDI: find potential LTPs for devices A and B {mountName}
+    activate MWDI #LightGrey
+
+    LILW_hygieneQueue <-- MWDI : {Uuid, LocalId, ServerLtp, ClientLtp, LayerProtocolName, externalLabel}
+    deactivate MWDI
+end
+
+note over LILW_hygieneQueue
+    Keep all LTPs where "layer-protocol-name" == "air-interface-2-0:LAYER_PROTOCOL_NAME_TYPE_AIR_LAYER"
+end note
+
+note over LILW_hygieneQueue
+  for each potential LTP pair do the following steps
+  (if errors occur during any step → stop processing for this pair and change all settings of devices
+  to original values and turn on adaptive-modulation if possible):
+end note
+
+group findLTPPair
+    note over LILW_hygieneQueue: check if utilization <= 30% (check to be determined), otherwise skip this LTP
+
+    note over LILW_hygieneQueue: for LTP A and B → check if same tx-frequency-cur/rx-frequency-cur\nif not, it cannot be valid LTP pair → skip to next
+
+    note over LILW_hygieneQueue: A and B → save current (original) transmission-min/-max values
+
+    note over LILW_hygieneQueue: A and B → find common transmission-mode-min and -max capability \nwith channel-bandwidth and modulation from plan values
+
+    LILW_hygieneQueue -> MWDG: A and B: switch off adaptive modulation
+    activate MWDG #LightGrey
+    LILW_hygieneQueue <-- MWDG
+    deactivate MWDG
+
+    LILW_hygieneQueue -> MWDG: A: set transmission-mode-min/-max to min common capability
+    activate MWDG #LightGrey
+    LILW_hygieneQueue <-- MWDG
+    deactivate MWDG
+
+    note over LILW_hygieneQueue: wait for settings to update (ltpPairEvaluationModulationChangeWaitTimeSeconds-profile)
+    group HygieneQueueExecutionCausesRequestOfMountAirInterfaceStatus
+        LILW_hygieneQueue -> MWDI2: B: read status and check if transmission-mode-cur matches setting of A {mountName, uuid, localId}
+        activate MWDI2 #LightGrey
+        LILW_hygieneQueue <-- MWDI2 : {air-interface-status}
+        deactivate MWDI2
+    end
+
+    LILW_hygieneQueue -> MWDG: A: set transmission-mode-min/-max to max common capability
+    activate MWDG #LightGrey
+    LILW_hygieneQueue <-- MWDG
+    deactivate MWDG
+
+    note over LILW_hygieneQueue: wait for settings to update (ltpPairEvaluationModulationChangeWaitTimeSeconds-profile)
+
+    group HygieneQueueExecutionCausesRequestOfMountAirInterfaceStatus
+        LILW_hygieneQueue -> MWDI2: B: read status and check if transmission-mode-cur matches setting of A {mountName, uuid, localId}
+        activate MWDI2 #LightGrey
+        LILW_hygieneQueue <-- MWDI2 : {air-interface-status}
+        deactivate MWDI2
+    end
+
+    note over of LILW_hygieneQueue: if the transmission-mode of B changed accordingly, this is a matching LTP-pair
+
+    note over of LILW_hygieneQueue: if matching pair:
+    LILW_hygieneQueue -> MWDG: A and B: Set transmission-mode-min/-max to plan values and turn on adaptive-modulation
+    activate MWDG #LightGrey
+    LILW_hygieneQueue <-- MWDG
+    deactivate MWDG
+
+    note over of LILW_hygieneQueue: else:
+    LILW_hygieneQueue -> MWDG: A and B: Set transmission-mode-min/-max to original plan values and turn on adaptive-modulation
+    activate MWDG #LightGrey
+    LILW_hygieneQueue <-- MWDG
+    deactivate MWDG
+end
+
+note over LILW_hygieneQueue
+    save matching LTP pair for link-id in queue
+end note
+
+@enduml
+

@@ -1,0 +1,20 @@
+
+@startuml im001_addLinkToHygieneQueue
+
+title Add link to hygiene queue
+
+participant "APT" as APT
+participant "LILW://v1/add-link-id" as addLinkId
+participant "Hygiene queue" as LILW_hygieneQueue
+
+APT -> addLinkId : link-id with context {mountNameA, mountNameB, plan-values}
+activate addLinkId
+
+addLinkId -> LILW_hygieneQueue : add link-id to queue {link-id} with context
+activate LILW_hygieneQueue #LightGrey
+note right of LILW_hygieneQueue: prioritize new entry
+addLinkId --> APT : return 200 response
+deactivate addLinkId
+
+@enduml
+

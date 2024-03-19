@@ -1,0 +1,24 @@
+
+@startuml im000_embedCausesQueueStart
+
+title PromptForEmbeddingCausesRequestForStartHygieneQueue
+
+participant "RO" as RO
+participant "LILW://v1/embed-yourself" as LILW_embedYourself
+participant "LILW://v1/start-hygiene-queue" as LILW_startQueue
+participant "Hygiene queue" as LILW_hygieneQueue
+
+RO -> LILW_embedYourself
+activate LILW_embedYourself #LightGrey
+
+LILW_embedYourself -> LILW_startQueue
+deactivate LILW_embedYourself
+activate LILW_startQueue #LightGrey
+
+
+LILW_startQueue -> LILW_hygieneQueue : initiate hygieneQueue handling
+deactivate LILW_startQueue #LightGrey
+activate LILW_hygieneQueue #LightGrey
+note right of LILW_hygieneQueue: hygieneQueue running
+
+@enduml

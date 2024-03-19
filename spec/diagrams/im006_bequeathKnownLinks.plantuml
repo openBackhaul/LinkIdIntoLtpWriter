@@ -1,0 +1,18 @@
+
+@startuml im006_bequeathKnownLinks
+
+title PromptForBequeathingDataCausesKnownLinksBeingTransferredToNR
+
+participant RO
+participant "OR://v1/bequeath-your-data-and-die" as OR
+participant "NR://v1/add-link-id" as NR
+
+RO -> OR
+activate OR #lightgrey
+
+note over OR: for each link in hygiene queue, call add-link-id on NR
+
+OR -> NR: link-id with context {mountNameA, mountNameB, plan-values}
+
+@enduml
+
