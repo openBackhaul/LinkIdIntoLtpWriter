@@ -1,0 +1,21 @@
+
+@startuml im003_refreshLinkId
+
+title Refresh link in queue
+
+participant "APT" as APT
+participant "LILW://v1/refresh-link-id" as refreshLinkId
+participant "Hygiene queue" as LILW_hygieneQueue
+
+APT -> refreshLinkId: {link-id}
+activate refreshLinkId
+
+refreshLinkId -> LILW_hygieneQueue : {link-id}
+activate LILW_hygieneQueue #LightGrey
+note right of LILW_hygieneQueue: prioritize existing entry
+
+refreshLinkId --> APT : return 200 response
+deactivate LILW_hygieneQueue
+
+@enduml
+

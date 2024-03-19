@@ -1,0 +1,47 @@
+
+@startuml im004_deleteLinkFromHygieneQueueAndDevice
+
+title Delete link from queue and device
+
+participant "APT" as APT
+participant "LILW://v1/delete-link-id" as deleteLinkId
+participant "Hygiene queue" as LILW_hygieneQueue
+participant "MWDI://.../control-construct={mountName}?fields=logical-termination-point(uuid;server-ltp;client-ltp;layer-protocol(local-id;layer-protocol-name);external-label)" as MWDIReadingLtpStructure
+participant "MWDG://.../logical-termination-point={uuid}/ltp-augment-1-0:ltp-augment-pac/external-label" as MWDG
+
+APT -> deleteLinkId : {link-id}
+activate deleteLinkId #LightGrey
+
+deleteLinkId -> LILW_hygieneQueue : delete link-id from queue
+activate LILW_hygieneQueue #LightGrey
+LILW_hygieneQueue --> deleteLinkId : "success" or "not found"
+deactivate LILW_hygieneQueue
+
+note over deleteLinkId: if link-id not found in queue, return error
+deleteLinkId --> APT : return 404 not found error
+
+group PromptForDeleteLinkCausesRequestForLtpsOfMount
+    deleteLinkId -> MWDIReadingLtpStructure: get LTPs for {mountName} (from hygieneQueue entry)
+    activate MWDIReadingLtpStructure #LightGrey
+    MWDIReadingLtpStructure --> deleteLinkId: {Uuid, LocalId, ServerLtp, ClientLtp, LayerProtocolName, externalLabel}
+    deactivate MWDIReadingLtpStructure
+end
+
+note over deleteLinkId
+    Keep all LTPs where "layer-protocol-name" == "air-interface-2-0:LAYER_PROTOCOL_NAME_TYPE_AIR_LAYER"
+    and externalLabel == LinkId
+end note
+
+note over deleteLinkId: for each LTP pair
+
+group PromptForDeleteLinkIdCausesRemovalOfLinkIdFromLtpOfDevice
+    deleteLinkId -> MWDG : unset external-label on A/B side LTP
+    activate MWDG #LightGrey
+    MWDG --> deleteLinkId : wait for response
+    deactivate MWDG
+end
+
+deleteLinkId --> APT : response: 200 on successful deletion, 404 on no LTP found, 500 on error
+
+@enduml
+
