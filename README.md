@@ -18,7 +18,7 @@ The LinkIdIntoLtpWriter operates on a priority-based "hygiene queue", which cont
 
 A set of independent checks are sequentially performed on each entry in the hygiene queue to assign the link ID to the  right LTP in the list of potential candidates on the device. Each check contributes to a reliability score associated with the queue entry. The score reflects the confidence in the accuracy of the Link ID assignment.
 
-* <ins>Threshold-based Assignment:</ins> The Link ID will only be written to the LTP if the associated reliability score exceeds a predefined minimum value.
+* <ins>Threshold-based Assignment:</ins> The Link ID will only be written to the LTP if the associated reliability score reaches a predefined minimum value.
 * <ins>Dynamic Priority Adjustment:</ins> Based on the reliability score, each entry in the queue will be reassigned a priority for future evaluation cycles. Entries with lower reliability scores will be given higher priority in the next run for re-evaluation.
 
 The tests executed for each entry of the HygieneQueue can be divided into two types:
