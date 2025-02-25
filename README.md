@@ -25,7 +25,7 @@ The tests executed for each entry of the HygieneQueue can be divided into two ty
 
 - <ins>Planning Data Tests:</ins> These checks focus on matching the planning data with information retrieved from the devices at one link end. This helps to identify the correct LTP based on the planning data.
 	
-- <ins>Cross-Link Tests:</ins> These checks involve querying the opposite link end to verify its properties. This cross-validation increases the reliability of the assignment by correlating the properties of both link ends.
+- <ins>Cross-Link Tests:</ins> These checks involve querying the opposite link end to verify its properties. Cross-validation increases the reliability of the assignment by correlating the properties of both link ends.
 
 The proccess of assesment of the appropriate LTP  is uniform and idempotent:
 
