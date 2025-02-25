@@ -32,6 +32,8 @@ The proccess of assesment of the appropriate LTP  is uniform and idempotent:
 * The same checks are performed at every (re)assesment, regarless of the previous reliability value, or whether a linkId is already written into the LTP. If the opposite link endpoint is not reachable, cross-link tests will be skiped, reflecting in a poorer reliability score.
 * In case some configuration activity is done on the link as part of a test, the changes shall be reverted by the end of it.
 
+See [Tests for identifying the correct AirInterface LTP](https://github.com/anacabbar/LinkIdIntoLtpWriter/issues/5)  
+
 
 **Services Provided by the LinkIdIntoLtpWriter:**
 
