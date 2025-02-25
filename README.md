@@ -39,9 +39,11 @@ The LILW offers the following exposed services:
 
 */v1/add-link-id:*
 		Adds a new Link ID to the hygiene queue, giving it the highest priority for immediate evaluation.
-		It returns a response with the outcome of the first evaluation: 
-			§ 200 (Success): If the Link ID was successfully written to an LTP, the response includes the UUID of the LTP and the reliability score.
-			§ Failure Response: If the reliability score does not meet the required threshold, the Link ID will not be written, and an error message is returned.
+		It returns a response with the outcome of the first evaluation:
+  
+*200 (Success): If the Link ID was successfully written to an LTP, the response includes the UUID of the LTP and the reliability score.
+   
+ *Failure Response: If the reliability score does not meet the required threshold, the Link ID will not be written, and an error message is returned.
 	
 */v1/delete-link-id:*
 	
