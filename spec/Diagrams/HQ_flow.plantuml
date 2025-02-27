@@ -28,7 +28,7 @@ group for each AirInterfaceLtp in Device
         :Update reliabilityScore; 
         if (reliabilityScore > thresholdValue?) then (Yes)
             :Write linkId into LTP;
-            :Requeue Entry & End Process;
+            :End Process with '200' and Requeue Entry;
             stop
         else (no)
         endif
@@ -38,7 +38,7 @@ group for each AirInterfaceLtp in Device
     else (no)
         if (reliabilityScore > thresholdValue?) then (Yes)
             :Write linkId into LTP;
-            :Requeue Entry & End Process;
+            :End Process with '200' and Requeue Entry;
             stop
         else (no)
         endif
