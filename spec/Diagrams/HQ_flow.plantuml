@@ -44,7 +44,7 @@ group for each AirInterfaceLtp in Device
         endif
     endif
 
-    :Next iteration;
+    :CONTINUE;
 
 end group
 
