@@ -54,7 +54,7 @@ The LILW offers the following exposed services:
 	Promotes an existing entry in the queue, giving it the highest priority for re-evaluation. This is useful if a previously low-priority entry's conditions have changed and it needs to be re-assessed.
  
 */v1/get-logged-errors:*
-	Provides access to the log of errors or issues that have occurred during the Link ID assignment process. It cases where the reliability threshold was not met, information is provided to assist in troubleshooting.
+	Provides access to the log of errors or issues that have occurred during the Link ID assignment process. (?)
 
 
 ### Relevance
