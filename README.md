@@ -23,9 +23,9 @@ A set of independent checks are sequentially performed on each entry in the hygi
 
 The tests executed for each entry of the HygieneQueue can be divided into two types:
 
-- <ins>Planning Data Tests:</ins> These checks focus on matching the planning data with information retrieved from the devices at one link end. This helps to identify the correct LTP based on the planning data.
+- <ins>Plan-Data Tests at link end:</ins> These checks focus on matching the planned data with information retrieved from the devices at one link end. This helps to identify the correct LTP based on the planning data.
 	
-- <ins>Cross-Link Tests:</ins> These checks involve querying the opposite link end to verify its properties. Cross-validation increases the reliability of the assignment by correlating the properties of both link ends.
+- <ins>Cross-Link Tests:</ins> These checks involve performing a configuration activity at one end, and querying the opposite link end to evaluate whether the expected reaction occurs.
 
 The proccess of assesment of the appropriate LTP  is uniform and idempotent:
 
@@ -54,7 +54,7 @@ The LILW offers the following exposed services:
 	Promotes an existing entry in the queue, giving it the highest priority for re-evaluation. This is useful if a previously low-priority entry's conditions have changed and it needs to be re-assessed.
  
 */v1/get-logged-errors:*
-	Provides access to the log of errors or issues that have occurred during the Link ID assignment process. It cases where the reliability threshold was not met, information is provided to assist in troubleshooting.
+	Provides access to the log of errors or issues that have occurred during the Link ID assignment process. (?)
 
 
 ### Relevance
