@@ -86,6 +86,7 @@ if (at least one candidate?) then (Yes)
      else(no)      
     endif
     :reliabilityScore = ltpScore of bestCandidate;
+    :Assign a priorityBand to the entry based on its reliabilityScore;
     :Write linkId into the bestCandidate LTP;
     :Return '200' and requeue entry;
 
