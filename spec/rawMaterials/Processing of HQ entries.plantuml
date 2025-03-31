@@ -1,0 +1,103 @@
+@startuml
+start
+
+:Retrieve Entry from Queue;
+:reliabilityScore = 0;
+group for each AirInterfaceLtp in Site A
+     
+repeat
+
+    group Evaluate LTP in Site A
+        :Perform PlannedDataTests;
+        :Calculate ltpScoreA;
+
+        if (ltpScoreA > thresholdValue?) then (Yes)                    
+            :Add LTP with its ltpScoreA to\nthe list of candidates;
+
+        else (No)
+        endif
+
+    end group
+
+ 
+  
+    repeat while (Continue with Next LTP in A)
+    -> //no more LTPs in site A//;
+    end group
+    
+
+    :Check whether Site B is reachable;
+
+    if (Site B reachable?) then (Yes)
+
+        group for each AirInterfaceLtp in Site B    
+
+            repeat
+                group Evaluate LTP in Site B
+                    :Perform 'PlannedDataTests';
+                    :Calculate ltpScoreB;
+
+                    if (ltpScoreB > thresholdValue?) then (Yes)
+                        :ltpScore = (ltpScoreA + ltpScoreB) / 2 ;                    
+                        group Cross-Link Tests
+                            :Perform 'Cross-Link Tests';
+                            :Update ltpScore;
+                            if(ltpScore > thresholdValue?) then (Yes)
+                                :Add LTP with its ltpScore to\nthe list of candidates;
+                            else (No)
+                            endif
+                        end group
+
+
+
+                    else (No)
+
+                    endif
+
+                end group
+
+            repeat while (continue with next LTP in B)                
+            -> //no more LTPs in site B//;
+
+         end group
+
+
+
+    else (No)
+    :ltpScore = ltpScoreA;
+    endif
+
+
+if (at least one candidate?) then (Yes)
+    :bestCandidate -> candidate with greatest ltpScore;
+    :Check whether this linkId is already written in\n a different AirInterface LTP of the ControlConstruct;
+    
+    if(linkId already written \nin a different LTP of this device?) then (Yes)
+        :Check operational status for that other interface; 
+        if(is this other interface active?) then (Yes)
+        :Send alarm with report result of both LTPs evaluations (?);
+        :Return '409: Conflict' (?) and requeue entry;
+        stop
+
+        else (No)
+        :Remove linkId from this inactive LTP\n(write default value);
+        endif
+
+     else(no)      
+    endif
+    :reliabilityScore = ltpScore of bestCandidate;
+    :Write linkId into the bestCandidate LTP;
+    :Return '200' and requeue entry;
+
+
+else(no)
+    :Send Alarm (?);
+    :Return 470 (? or 404?) and requeue entry (?);
+stop
+endif
+stop
+
+
+
+
+@enduml
