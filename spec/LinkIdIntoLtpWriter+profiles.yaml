@@ -24,15 +24,6 @@ profiles:
       static-value: string
       value-reference: string
 
-  - profile-name: 'FileProfile'
-    uuid: '^[a-z]{2,6}-([0-9]+)-([0-9]+)-([0-9]+)-file-p-[0-9]{3}$'
-    capability:
-      file-identifier: string
-      file-description: string
-    configuration:
-      file-path: string
-      operation: string
-
   - profile-name: 'IntegerProfile'
     uuid: '^[a-z]{2,6}-([0-9]+)-([0-9]+)-([0-9]+)-integer-p-[0-9]{3}$'
     capability:
@@ -53,5 +44,12 @@ profiles:
     configuration:
       string-value: string
 
-
+  - profile-name: 'PriorityBandProfile'
+    uuid: '^[a-z]{2,6}-([0-9]+)-([0-9]+)-([0-9]+)-string-p-[0-9]{3}$'
+    capability:
+      priority-band-name: string
+    configuration:
+      upper-limit: integer
+      lower-limit: integer
+      cooldown-period: integer
 ## TODO: Add further Profile definitions, if required
