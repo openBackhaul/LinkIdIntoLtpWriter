@@ -40,7 +40,7 @@ See [Hygiene Queue definition](rawMaterials/HygieneQueue_Definition.md)
 
 The LILW offers the following exposed services:
 
-*/v1/add-link-to-queue:*
+*/v1/add-link-to-queue:*          (>>>Other possibility "/v1/add-links-to-queue" and accept a list of links)<br />
 		Adds a new link to the hygiene queue, giving it the highest priority for immediate evaluation.
 		It returns a response with the outcome of the first evaluation:
   
