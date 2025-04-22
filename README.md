@@ -11,7 +11,7 @@ Planning data (includes content of legacy databases like x:akta or APT) is ident
 
 The LinkIdIntoLtpWriter  matches the planned links with the AirInterfaces operating in the network. By  sequentially performing a series of independent and unrelated tests, it identifies ONF LTP UUIDs that  correspond to the Telefónica LinkIds,  with the critical objective of striving for the highest possible accuracy in this association. The application then writes the Telefónica Link ID into the appropriate Logical Termination Point.
 
-The LinkIdIntoLtpWriter operates on a priority-based "hygiene queue", which contains entries of  the link ID to be written, the respective mountNames of both link ends, a reliability score and supporting planning data (such as modem card slot, access port, txFrequency, etc.) to facilitate the identification of the corresponding LTP.
+The LinkIdIntoLtpWriter operates on a priority-based *_hygiene queue_*, which contains entries of  the link ID to be written, the respective mountNames of both link ends, a reliability score and supporting planning data (such as modem card slot, access port, txFrequency, etc.) to facilitate the identification of the corresponding LTP.
 
 
 **Checks and Reliability Scoring:**
@@ -32,9 +32,9 @@ The proccess of assesment of the appropriate LTP  is uniform and idempotent:
 * The same checks are performed at every (re)assesment, regarless of the previous reliability value, or whether a linkId is already written into the LTP. If the opposite link end is not reachable, cross-link tests will be skipped, reflecting in a poorer reliability score.
 * In case some configuration activity is done on the link as part of a test, the changes shall be reverted by the end of it.
 
-See [Process Flow of entries in the Hygiene Queue](rawMaterials/Processing of HQ entries.png)
-See [Tests for identifying the correct AirInterface LTP](https://github.com/anacabbar/LinkIdIntoLtpWriter/issues/5)  
-See [Hygiene Queue definition](rawMaterials/HygieneQueue_Definition.md )
+See [Process Flow of entries in the Hygiene Queue](rawMaterials/Processing_of_HQ_entries.png) <br />
+See [Tests for identifying the correct AirInterface LTP](https://github.com/anacabbar/LinkIdIntoLtpWriter/issues/5) <br />
+See [Hygiene Queue definition](rawMaterials/HygieneQueue_Definition.md)
 
 **Services Provided by the LinkIdIntoLtpWriter:**
 
