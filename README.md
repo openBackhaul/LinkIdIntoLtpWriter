@@ -40,8 +40,8 @@ See [Hygiene Queue definition](rawMaterials/HygieneQueue_Definition.md)
 
 The LILW offers the following exposed services:
 
-*/v1/add-link-id:*
-		Adds a new Link ID to the hygiene queue, giving it the highest priority for immediate evaluation.
+*/v1/add-link-to-queue:*
+		Adds a new Link to the hygiene queue, giving it the highest priority for immediate evaluation.
 		It returns a response with the outcome of the first evaluation:
   
 *200 (Success): If the Link ID was successfully written to an LTP, the response includes the UUID of the LTP and the reliability score.
@@ -50,11 +50,11 @@ The LILW offers the following exposed services:
    
 *470? (Ressource does not exist within the connected device): Within the device(s), no appropriate LTP(s) could be found for the linkId to be written into. In other words, the required threshold was not met for any LTP at one or both link-ends.
 	
-*/v1/delete-link-id:*
-		Removes the entire entry containing this Link ID from the hygiene queue.
+*/v1/remove-link-from-queue:*
+		Removes the entire link entry from the hygiene queue. (and deletes the link ID from the LTPs, in case it has alreaddy been written?)
 	
 			
-*/v1/refresh-link-id:*
+*/v1/promote-link-in-queue:*
 	Promotes an existing entry in the queue, giving it the highest priority for re-evaluation.
  
 */v1/get-logged-errors:*
