@@ -41,7 +41,7 @@ See [Hygiene Queue definition](rawMaterials/HygieneQueue_Definition.md)
 The LILW offers the following exposed services:
 
 */v1/add-links-to-queue:*
-		Adds a new Link to the hygiene queue, giving it the highest priority for immediate evaluation.
+		Adds one ore several new links to the hygiene queue, giving them the highest priority for immediate evaluation.
 		It returns a response with the outcome of the first evaluation:
   
 *200 (Success): If the Link ID was successfully written to an LTP, the response includes the UUID of the LTP and the reliability score.
