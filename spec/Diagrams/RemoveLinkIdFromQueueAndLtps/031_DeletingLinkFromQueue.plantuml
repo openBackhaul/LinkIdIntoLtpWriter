@@ -1,0 +1,20 @@
+@startuml 030_DeletingLinkFromQueue
+skinparam responseMessageBelowArrow true
+
+title
+RequestForRemovingLinkIdFromQueueAndLtpsCausesDeletingLinkFromQueue
+end title
+
+participant "External" as external
+participant "LILW://v1/remove-link-id-from-queue-and-ltps" as lilw_remove
+participant "ElasticSearch:" as HQ
+
+external -> lilw_remove: {linkId, mountNameA, mountNameB} (apiKeyAuth)
+
+activate lilw_remove
+
+lilw_remove -> HQ: DELETE {index, linkId}
+HQ --> lilw_remove: 200 OK
+
+deactivate lilw_remove
+@enduml

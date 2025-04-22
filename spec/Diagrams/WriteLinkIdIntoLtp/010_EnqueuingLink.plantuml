@@ -1,0 +1,21 @@
+@startuml 010_EnqueuingLink
+skinparam responseMessageBelowArrow true
+
+title
+RequestForWritingLinkIdIntoLtpCausesEnqueuingLink
+end title
+
+participant "External" as external
+participant "LILW://v1/write-link-id-into-ltp" as lilw_write
+participant "ElasticSearch:" as HQ
+
+
+external -> lilw_write: {linkId, mountNameA, mountNameB, {planning-data}} (apiKeyAuth)
+
+activate lilw_write 
+lilw_write -> HQ:  PUT {linkId, mountNameA, mountNameB, {planning-data}, reliabilityScore, priorityBand}
+
+HQ --> lilw_write: '200'
+
+deactivate lilw_write
+@enduml

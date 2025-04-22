@@ -1,0 +1,19 @@
+@startuml 021_RemovingExistingLinkEntryFromQueue
+skinparam responseMessageBelowArrow true
+
+title
+RequestForAddingLinkToQueueCausesRemovingExistingLinkEntryFromQueue
+end title
+
+participant "External" as external
+participant "LILW://v1/add-link-to-queue" as lilw_add
+participant "LILW://v1/remove-link-id-from-queue-and-ltps" as lilw_remove
+
+external -> lilw_add: {linkId, mountNameA, mountNameB, {planning-data}} (apiKeyAuth)
+
+activate lilw_add
+lilw_add -> lilw_remove: {linkId, mountNameA, mountNameB} (apiKeyAuth)
+lilw_remove --> lilw_add: 200 OK
+
+deactivate lilw_add
+@enduml

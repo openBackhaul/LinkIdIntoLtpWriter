@@ -1,8 +1,8 @@
-@startuml 009_WritingLinkIdIntoLtp
+@startuml 009_WritingLinkIdIntoLtpExternalLabel
 skinparam responseMessageBelowArrow true
 
 title
-RequestForWritingLinkIdIntoLtpCausesWritingLinkIdIntoLtp
+RequestForWritingLinkIdIntoLtpCausesWritingLinkIdIntoLtpExternalLabel
 end title
 
 participant "External" as external
@@ -13,7 +13,7 @@ participant "MWDG://core-model-1-4:network-control-domain=live/\ncontrol-constru
 external -> lilw_write: {linkId, mountNameA, mountNameB, {planning-data}} (apiKeyAuth)
 
 activate lilw_write
-lilw_write -> Mwdg: {linkId} (apiKeyAuth)
+lilw_write -> Mwdg: {MountName, LtpUUid, linkId} (apiKeyAuth)
 Mwdg --> lilw_write: '204'
 deactivate lilw_write
 @enduml
