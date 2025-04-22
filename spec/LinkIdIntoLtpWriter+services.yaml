@@ -60,6 +60,12 @@ servers:
       individual:
         - operation-name: /v1/write-link-id-into-ltp
           uuid: lilw-1-0-0-op-s-is-000
+        - operation-name: /v1/add-link-to-queue
+          uuid: lilw-1-0-0-op-s-is-001
+        - operation-name: /v1/remove-link-id-from-queue-and-ltps
+          uuid: lilw-1-0-0-op-s-is-002
+        - operation-name: /v1/promote-link-in-queue
+          uuid: lilw-1-0-0-op-s-is-003
   http-server:
     own-application-name: LinkIdIntoLtpWriter
     own-release-number: 1.0.0
@@ -69,7 +75,7 @@ servers:
     owner-email-address: ana.cabello-barrera@telefonica.com
     release-list:
       - release-number: 1.0.0
-        release-date: 02.01.2025
+        release-date: 01.05.2025
         changes: Initial version
   tcp-server:
     - description: Without TLS layer
@@ -353,3 +359,6 @@ clients:
         individual:
         - operation-name: /v1/write-link-id-into-ltp
           uuid: lilw-1-0-0-op-c-is-lilw-1-0-0-000
+        - operation-name: /v1/remove-link-id-from-queue-and-ltps
+          uuid: lilw-1-0-0-op-c-is-lilw-1-0-0-001
+
