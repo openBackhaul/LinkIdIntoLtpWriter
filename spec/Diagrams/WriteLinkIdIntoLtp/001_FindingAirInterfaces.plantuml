@@ -1,0 +1,24 @@
+@startuml 001_FindingAirInterfaces
+skinparam responseMessageBelowArrow true
+
+title
+RequestForWritingLinkIdIntoLtpCausesFindingAirInterfaces
+end title
+
+participant "External" as external
+participant "LILW://v1/write-link-id-into-ltp" as lilw_write
+participant "MWDI://core-model-1-4:network-control-domain=cache/control-construct={mountMame}?fields=logical-termination-point(uuid;layer-protocol(local-id;layer-protocol-name))" as Ltp
+
+
+external -> lilw_write: {linkId, mountNameA, mountNameB, {planning-data}} (apiKeyAuth)
+
+activate lilw_write
+    lilw_write -> Ltp: {MountNameA} (apiKeyAuth)
+    Ltp --> lilw_write: [{Uuid, LocalId, LayerProtocolName}]
+
+    note over lilw_write
+    Keep the Uuid and LocalId of the LTPs with LayerProtocolName == AIR_LAYER
+    end note
+deactivate lilw_write
+
+@enduml

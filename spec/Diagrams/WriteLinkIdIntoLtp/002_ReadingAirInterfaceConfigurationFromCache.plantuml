@@ -1,0 +1,20 @@
+@startuml 002_ReadingAirInterfaceConfigurationFromCache
+skinparam responseMessageBelowArrow true
+
+title
+RequestForWritingLinkIdIntoLtpCausesReadingAirInterfaceConfigurationFromCache
+end title
+
+participant "External" as external
+participant "LILW://v1/write-link-id-into-ltp" as lilw_write
+participant "MWDI://core-model-1-4:network-control-domain=cache/control-construct={mountName}/logical-termination-point={uuid}/layer-protocol={localId}/air-interface-2-0:air-interface-pac/air-interface-configuration" as AirInterfaceConfig
+
+
+external -> lilw_write: {linkId, mountNameA, mountNameB, {planning-data}} (apiKeyAuth)
+
+activate lilw_write
+lilw_write -> AirInterfaceConfig: {mountName, uuid, localId } (apiKeyAuth)
+AirInterfaceConfig --> lilw_write: {Entire AirInterfaceConfiguration from cache}
+deactivate lilw_write
+
+@enduml 
