@@ -1,8 +1,8 @@
-@startuml 003_ReadingAirInterfaceStatusFromCache
+@startuml 003_ReadingAirInterfaceStatusFromLive
 skinparam responseMessageBelowArrow true
 
 title
-RequestForWritingLinkIdIntoLtpCausesReadingAirInterfaceStatusFromCache
+RequestForWritingLinkIdIntoLtpCausesReadingAirInterfaceStatusFromLive
 end title
 
 participant "External" as external

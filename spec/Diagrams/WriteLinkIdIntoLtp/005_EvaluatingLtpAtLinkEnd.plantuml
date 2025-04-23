@@ -9,7 +9,7 @@ participant "External" as external
 participant "LILW://v1/write-link-id-into-ltp" as lilw_write
 participant "<i>RequestForWritingLinkIdIntoLtpCauses\n<i>FindingAirInterfaces</i>" as Ltps
 participant "<i>RequestForWritingLinkIdIntoLtpCauses\n<i>ReadingAirInterfaceConfigurationFromCache</i>" as Config
-participant "<i>RequestForWritingLinkIdIntoLtpCauses\n<i>ReadingAirInterfaceStatusFromCache</i>" as Status
+participant "<i>RequestForWritingLinkIdIntoLtpCauses\n<i>ReadingAirInterfaceStatusFromLive</i>" as Status
 participant "<i>RequestForWritingLinkIdIntoLtpCauses\n<i>ReadingAirInterfaceCapabilitiesFromCache</i>" as Capa
 participant "MWDI://core-model-1-4:network-control-domain=cache/\n<i>control-construct={mount-name}?fields=top-level-equipment" as TopLevelEquipment
 participant "MWDI://core-model-1-4:network-control-domain=cache/\n<i>control-construct={mount-name}/logical-termination-point={uuid}\n/ltp-augment-1-0:ltp-augment-pac?fields=equipment" as LtpAugment
