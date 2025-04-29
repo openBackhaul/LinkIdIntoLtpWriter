@@ -45,7 +45,7 @@ profiles:
       string-value: string
 
   - profile-name: 'PriorityBandProfile'
-    uuid: '^[a-z]{2,6}-([0-9]+)-([0-9]+)-([0-9]+)-string-p-[0-9]{3}$'
+    uuid: '^[a-z]{2,6}-([0-9]+)-([0-9]+)-([0-9]+)-priority-p-[0-9]{3}$'
     capability:
       priority-band-name: string
     configuration:
