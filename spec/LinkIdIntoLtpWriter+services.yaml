@@ -70,7 +70,7 @@ servers:
     own-application-name: LinkIdIntoLtpWriter
     own-release-number: 1.0.0
     uuid: lilw-1-0-0-http-s-000
-    application-purpose: Writes the network element identifiers, as recorded in Telefónica's planning tools, into the corresponding ONF interfaces
+    application-purpose: Writes the network element identifiers of air interfaces, as recorded in Telefónica's planning tools, into the corresponding ONF interfaces
     owner-name: Ana Cabello Barrera
     owner-email-address: ana.cabello-barrera@telefonica.com
     release-list:
@@ -98,7 +98,8 @@ clients:
     elasticsearch-client:
       uuid: lilw-1-0-0-es-c-es-1-0-0-000
       index-alias: 5
-      ## are elasticSearch paths required here?
+      ## add ElasticSearch paths here (?)
+      ## add second ElasticSearch client here with a different indexAlias
 
   - http-client:
       application-name: OldRelease
