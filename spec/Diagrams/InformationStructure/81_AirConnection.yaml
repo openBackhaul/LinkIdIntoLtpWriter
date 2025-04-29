@@ -1,0 +1,54 @@
+link:
+  type: array
+  x-key: local-id
+  items:
+    oneOf:
+      - description: 'airLink'
+        type: object
+        required:
+          - local-id
+          - linktp
+        properties:
+          local-id:
+            type: string
+            description: >
+              'LinkId
+              candidate: from [/v1/write-link-id-into-ltp$request.body#link-id]
+              running: from candidate
+              operational: from running
+          linktp:
+            type: array
+            x-key: local-id
+            minItems: 2
+            maxItems: 2
+            items:
+              type: object
+              required:
+                - local-id
+                - _cc
+                - _ltp
+                - _lp
+              properties:
+                local-id:
+                  type: string
+                _cc:
+                  type: string
+                  description: >
+                    'MountName
+                    candidate: from [/network-control-domain=candidate/forwarding-domain=management-plane-transport/forwarding-construct=[deviceName]/fctp=management-plane-transport-client/_cc]
+                    running: from candidate
+                    operational: from ???
+                _ltp:
+                  type: string
+                  description: >
+                    '
+                    candidate: from ???
+                    running: from ???
+                    operational: from ???
+                _lp:
+                  type: string
+                  description: >
+                    '
+                    candidate: from ???
+                    running: from ???
+                    operational: from ???

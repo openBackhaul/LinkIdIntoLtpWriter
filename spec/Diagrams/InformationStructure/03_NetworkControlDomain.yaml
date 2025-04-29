@@ -1,0 +1,65 @@
+network-control-domain:
+  type: array
+  x-key: local-id
+  minItems: 4
+  maxItems: 4
+  items:
+    type: object
+    required:
+      - local-id
+      - profile
+      - control-construct
+      - link
+      - forwarding-domain
+    properties:
+      local-id:
+        type: string
+        enum:
+          - 'candidate'
+          - 'startup'
+          - 'running'
+          - 'operational'
+        description: 'NMDA like data storages that document the NetworkControlDomain'
+      profile:
+        type: array
+        x-key: local-id
+        items:
+          oneOf:
+            - description: 'deviceTemplate - see 07_DeviceTemplate.yaml'
+              type: object
+      control-construct:
+        type: array
+        x-key: local-id
+        items:
+          oneOf:
+            - description: 'device - see 31_Device.yaml'
+              type: object
+      link:
+        type: array
+        x-key: local-id
+        items:
+          oneOf:
+            - description: 'airLink - see 81_AirConnection.yaml'
+              type: object
+      forwarding-domain:
+        type: array
+        x-key: local-id
+        minItems: 1
+        maxItems: 1
+        items:
+          type: object
+          description: 'managementPlaneTransport'
+          required:
+            - local-id
+            - forwarding-construct
+          properties:
+            local-id:
+              type: string
+              enum:
+                - 'management-plane-transport'
+            forwarding-construct:
+              type: array
+              x-key: local-id
+              items:
+                type: object
+                description: 'managementPlaneTransportFc - see 88_ManagementPlaneTransportConnection.yaml'
