@@ -1,0 +1,142 @@
+@startuml WriteLinkIdIntoLtp
+skinparam responseMessageBelowArrow true
+
+title
+WriteLinkIdIntoLtp
+end title
+
+participant "External" as external
+participant "LILW://v1/write-link-id-into-ltp" as lilw_write
+participant "<i>RequestForWritingLinkIdIntoLtpCauses\n<i>CheckingConnectionOfLinkEndpoints</i>" as connection
+participant "<i>RequestForWritingLinkIdIntoLtpCauses\n<i>EvaluatingLtpsAtLinkEnd</i>" as localTests
+participant "<i>RequestForWritingLinkIdIntoLtpCauses\n<i>TestingTxPowerConfigurationAcrossTheLink</i>" as txPowerTest
+participant "<i>RequestForWritingLinkIdIntoLtpCauses\n<i>TestingCorrectIdentificationOfXpicLink</i>" as xpicTest
+participant "<i>RequestForWritingLinkIdIntoLtpCauses\n<i>ReadingExternalLabelOfLtps</i>" as externalLabel
+participant "<i>RequestForWritingLinkIdIntoLtpCauses\n<i>ReadingAirInterfaceStatusFromLive</i>" as status
+participant "<i>RequestForWritingLinkIdIntoLtpCauses\n<i>RemovingLinkIdFromLtpAndQueue</i>" as remove
+participant "<i>RequestForWritingLinkIdIntoLtpCauses\n<i>WritingLinkIdIntoLtpExternalLabel</i>" as write
+participant "<i>RequestForWritingLinkIdIntoLtpCauses\n<i>EnqueueingLink</i>" as enqueue
+
+external -> lilw_write: {linkId, mountNameA, mountNameB,\n {planning-data}} (apiKeyAuth)
+
+activate lilw_write
+
+connection --> lilw_write
+
+note over lilw_write
+    Perform local tests on single link end, or perform tests on both ends
+    and accross the link, depending of the reacheability of sides A and B
+    (determined from the previous forwarding)
+end note
+
+alt If only one link end is reacheable (only mountNameA or mountNameB is connected)
+
+    localTests --> lilw_write: [{LtpUuid, ltpScore}] (list of Ltps in mount point with corresponding ltpScore)
+
+    note over lilw_write
+       <u>For all evaluated Ltps:</u>
+       If ltpScore < minimumThreshhold defined in ##reference integer profile instance##, then discard this LTP
+       Else
+        - candidateScore = ltpScore
+        - add LTP (LtpUuidA/B, candidateScore) to the list of candidates
+    end note
+
+else If both link ends A and B are reacheable
+    loop for each mounName A 
+
+        localTests --> lilw_write: [{LtpUuid, ltpScore}] (list of Ltps in mount point with corresponding ltpScore)
+
+    note over lilw_write
+       <u>For all evaluated Ltps in A:</u>
+       If ltpScore < minimumThreshhold defined in ##reference integer profile instance##, then discard this LTP
+       Else, evaluate every possible LTP partner from opposite link end.
+    end note
+
+        loop for each mountName B
+            localTests --> lilw_write: [{LtpUuid, ltpScore}] (list of Ltps in mount point with corresponding ltpScore)
+
+            note over lilw_write
+            <u>For all evaluated Ltps in B:</u>
+            If ltpScore < minimumThreshhold defined in ##reference integer profile instance##, then discard this LTP
+            end note
+
+            note over lilw_write
+                For the potential LTP-pairs from A and B
+                - candidateScore = (ltpScoreA + ltpScoreB)/2
+                - add LTP-pair (LtpUuidA, LtpUuidB, candidateScore) to the list of candidates
+            end note
+        end loop
+
+    end loop
+
+    txPowerTest --> lilw_write
+    xpicTest --> lilw_write
+
+    note over lilw_write
+        If after performing cross-link tests 
+        candidateScore < minimim threshold value specified in ##reference integer profile instance##
+        then remove those LTPs from list of candidates
+    end note
+
+end alt
+
+
+alt No single candidate Found 
+    lilw_write --> external: 470: Ressource not found within connected device
+else At least one candidate
+    note over lilw_write
+        bestCandidate = Candidate with greatest candidateScore
+        reliabilityScore = candidateScore of bestCandidate
+    end note
+
+    note over lilw_write
+        Check whether the LinkId is already written into some LTP of the device
+    end note
+
+    loop for mountNameA and mountNameB
+        
+        externalLabel --> lilw_write: {LtpUuid, externalLabel}
+
+        alt linkID is already written in bestCandidate LTP 
+            lilw_write --> external: 200 OK
+        else linkID is written in other LTP (not the bestCandidate)
+            note over lilw_write
+            Check operational status of this other LTP
+            end note
+            status --> lilw_write: {operationalStatus of AirInterface}
+                alt Interface is UP
+                    note over lilw_write
+                        Report conflict and cancel operation
+                    end note
+                    lilw_write --> external: 409 Conflict
+                else Interface is DOWN
+                    remove --> lilw_write
+                end alt
+        end alt
+
+        note over lilw_write
+            Write linkId into LTP(s) of bestCandidate
+        end note
+
+        write --> lilw_write 
+
+    end loop
+
+    note over lilw_write
+        reliabilityScore = candidateScore of bestCandidate
+    end note
+
+    note over lilw_write
+        Enqueue link entry with reliabilityScore and corresponding priority band after:
+        _#reference profile instance##
+    end note
+
+    enqueue --> lilw_write
+
+    lilw_write --> external: 200 OK
+
+end alt
+
+deactivate lilw_write
+
+@enduml

@@ -1,4 +1,4 @@
-@startuml 005_ReadingVendorLabelOfHolder
+@startuml 005_ReadingAirInterfaceCapabilitiesFromCache
 skinparam responseMessageBelowArrow true
 
 title

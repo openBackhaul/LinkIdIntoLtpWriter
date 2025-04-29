@@ -1,8 +1,8 @@
-@startuml 005_EvaluatingLtpAtLinkEnd
+@startuml 006_EvaluatingLtpsAtLinkEnd
 skinparam responseMessageBelowArrow true
 
 title
-RequestForWritingLinkIdIntoLtpCausesEvaluatingLtpAtLinkEnd
+RequestForWritingLinkIdIntoLtpCausesEvaluatingLtpsAtLinkEnd
 end title
 
 participant "External" as external
@@ -103,5 +103,9 @@ loop for each AirInterface Uuid
     end alt
 
 end loop
+
+note over lilw_write
+       RESULT: List of all LTPs with respective LtpUuid and ltpScore
+end note
 deactivate lilw_write
 @enduml

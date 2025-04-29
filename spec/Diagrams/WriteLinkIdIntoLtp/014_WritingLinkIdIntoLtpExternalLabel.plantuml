@@ -1,4 +1,4 @@
-@startuml 009_WritingLinkIdIntoLtpExternalLabel
+@startuml 014_WritingLinkIdIntoLtpExternalLabel
 skinparam responseMessageBelowArrow true
 
 title

@@ -8,32 +8,15 @@ end title
 participant "External" as external
 participant "LILW://v1/add-link-to-queue" as lilw_add
 participant "ElasticSearch:" as HQ
-participant "<i>RequestForAddingLinkToQueueCauses\n<i>RemovingExistingLinkEntryFromQueue</i>" as lilw_remove
-participant "<i>RequestForAddingLinkToQueueCauses\n<i>WritingLinkIdIntoLtp</i>" as lilw_write
-
-
+                            
 external -> lilw_add: {linkId, mountNameA, mountNameB, {planning-data}} (apiKeyAuth)
 
 activate lilw_add
 note over lilw_add
     Check whether an entry with this link ID alredy exists in the hygiene queue
 end note
-lilw_add -> HQ: {linkId, mountNameA, mountNameB} (apiKeyAuth)
+lilw_add -> HQ: {linkId} (apiKeyAuth)
 HQ --> lilw_add
-
-
-alt #ff5733 There is alredy an entry for this Link ID with different MountNames 
-    lilw_add -> external: 409: Conflict
-else #f6ff33 There is already an entry for this Link ID with same MountNames 
-    lilw_remove --> lilw_add: 200 OK
-    lilw_write --> lilw_add: 200 OK
-    lilw_add --> external: 200 OK
-else #46ff33 There is no entry yet for this Link ID in the Hygiene Queue
-    lilw_write --> lilw_add: 200 OK
-    lilw_add --> external: 200 OK
-
-end alt
-
 
 deactivate lilw_add
 @enduml

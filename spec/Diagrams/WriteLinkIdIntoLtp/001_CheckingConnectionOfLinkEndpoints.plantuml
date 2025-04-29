@@ -1,0 +1,29 @@
+@startuml 001_CheckingConnectionOfLinkEndpoints
+skinparam responseMessageBelowArrow true
+
+title
+RequestForWritingLinkIdIntoLtpCausesCheckingConnectionOfLinkEndpoints
+end title
+
+participant "External" as external
+participant "LILW://v1/write-link-id-into-ltp" as lilw_write
+participant "MWDI://core-model-1-4:network-control-domain=cache/control-construct={mountMame}?fields=equipment-augment-1-0:control-construct-pac(external-label)" as externalLabel
+
+
+external -> lilw_write: {linkId, mountNameA, mountNameB, {planning-data}} (apiKeyAuth)
+
+activate lilw_write
+    lilw_write -> externalLabel: {MountNameA} (apiKeyAuth)
+    externalLabel --> lilw_write: {externalLabel} OR 404:Not found
+
+    lilw_write -> externalLabel: {MountNameB} (apiKeyAuth)
+    externalLabel --> lilw_write: {externalLabel} OR 404:Not found
+
+
+    note over lilw_write
+    Save whether link endpoints A and B are reacheable
+    end note
+
+deactivate lilw_write
+
+@enduml

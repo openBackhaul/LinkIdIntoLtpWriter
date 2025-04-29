@@ -1,4 +1,4 @@
-@startuml 003_ReadingAirInterfaceStatusFromLive
+@startuml 004_ReadingAirInterfaceStatusFromLive
 skinparam responseMessageBelowArrow true
 
 title
