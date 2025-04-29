@@ -1,0 +1,22 @@
+@startuml 020_CheckingExistingEntriesInQueue
+skinparam responseMessageBelowArrow true
+
+title
+RequestForAddingLinkToQueueCausesCheckingExistingEntriesInQueue
+end title
+
+participant "External" as external
+participant "LILW://v1/add-link-to-queue" as lilw_add
+participant "ElasticSearch:" as HQ
+                            
+external -> lilw_add: {linkId, mountNameA, mountNameB, {planning-data}} (apiKeyAuth)
+
+activate lilw_add
+note over lilw_add
+    Check whether an entry with this link ID alredy exists in the hygiene queue
+end note
+lilw_add -> HQ: {linkId} (apiKeyAuth)
+HQ --> lilw_add
+
+deactivate lilw_add
+@enduml

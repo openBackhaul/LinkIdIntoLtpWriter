@@ -1,0 +1,32 @@
+@startuml 030_RemovingLinkIdFromLtps
+skinparam responseMessageBelowArrow true
+
+title
+RequestForRemovingLinkIdFromQueueAndLtpsCausesRemovingLinkIdFromLtps
+end title
+
+participant "External" as external
+participant "LILW://v1/remove-link-id-from-queue-and-ltps" as lilw_remove
+participant "MWDI://core-model-1-4:network-control-domain=live/control-construct={mountName}/\nlogical-termination-point(ltp-augment-1-0:ltp-augment-pac(external-label))" as mwdi
+participant "MWDG://core-model-1-4:network-control-domain=live/control-construct={mountName}/\nlogical-termination-point={uuid}/ltp-augment-1-0:ltp-augment-pac/external-label" as mwdg
+
+external -> lilw_remove: {linkId, mountNameA, mountNameB} (apiKeyAuth)
+
+activate lilw_remove
+
+loop for each mountName (A and B)
+    lilw_remove -> mwdi: {mountName, linkId} (apiKeyAuth)
+    mwdi --> lilw_remove: [{LtpUuid, externalLabel}]
+    note over lilw_remove
+        Find LTP with externalLabel == linkId
+        and overwrite default value **"External label not yet defined."**
+        into the externalLabel.
+    end note
+    lilw_remove -> mwdg: {MountName,LtpUuid, defaultExternalLabel }
+    mwdg --> lilw_remove: 200 OK
+end loop
+
+
+
+deactivate lilw_remove
+@enduml

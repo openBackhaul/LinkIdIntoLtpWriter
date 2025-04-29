@@ -1,0 +1,111 @@
+@startuml 006_EvaluatingLtpsAtLinkEnd
+skinparam responseMessageBelowArrow true
+
+title
+RequestForWritingLinkIdIntoLtpCausesEvaluatingLtpsAtLinkEnd
+end title
+
+participant "External" as external
+participant "LILW://v1/write-link-id-into-ltp" as lilw_write
+participant "<i>RequestForWritingLinkIdIntoLtpCauses\n<i>FindingAirInterfaces</i>" as Ltps
+participant "<i>RequestForWritingLinkIdIntoLtpCauses\n<i>ReadingAirInterfaceConfigurationFromCache</i>" as Config
+participant "<i>RequestForWritingLinkIdIntoLtpCauses\n<i>ReadingAirInterfaceStatusFromLive</i>" as Status
+participant "<i>RequestForWritingLinkIdIntoLtpCauses\n<i>ReadingAirInterfaceCapabilitiesFromCache</i>" as Capa
+participant "MWDI://core-model-1-4:network-control-domain=cache/\n<i>control-construct={mount-name}?fields=top-level-equipment" as TopLevelEquipment
+participant "MWDI://core-model-1-4:network-control-domain=cache/\n<i>control-construct={mount-name}/logical-termination-point={uuid}\n/ltp-augment-1-0:ltp-augment-pac?fields=equipment" as LtpAugment
+participant "MWDI://core-model-1-4:network-control-domain=cache/\n<i>control-construct={mount-name}/equipment={uuid}/actual-equipment?\nfields=structure(category);manufactured-thing(equipment-type(part-type-identifier))" as EquipmentDetails
+participant "MWDI://core-model-1-4:network-control-domain=cache/\n<i>control-construct={mount-name}/equipment={uuid}\n?fields=contained-holder(occupying-fru;equipment-augment-1-0:holder-pac(vendor-label))" as HolderLabel
+
+external -> lilw_write: {linkId, mountNameA, \n mountNameB, {planning-data}} (apiKeyAuth)
+
+activate lilw_write
+Ltps --> lilw_write: list of UUids of AirInterface LTPs
+
+loop for each AirInterface Uuid
+    note over lilw_write
+        ltpScore = 0
+    end note
+    Config --> lilw_write: txFrequency
+    note over lilw_write
+    TEST: **request.Body#PlanningData::txFrequency** == txFrequency
+    UPDATE ltpScore
+    end note
+
+    Status --> lilw_write: transmissionModeCur
+    Capa --> lilw_write: transmissionModeList[], txFrequencyMin, txFrequencyMax
+
+    note over lilw_write
+    TEST: **request.Body#PlanningData::subbandFrequencyMin** == txFrequencyMin 
+    TEST: **request.Body#PlanningData::subbandFrequencyMax** == txFrequencyMax 
+    UPDATE ltpScore
+    end note
+
+    note over lilw_write
+    For transmissionMode in TransmissionModeList 
+    with transmissionModeName == transmissionModeCur:
+
+    TEST: **request.Body#PlanningData::channelBandwidth** == transmissionMode.channelBandwidth
+    UPDATE ltpScore 
+    end note
+
+    lilw_write -> TopLevelEquipment: {mountName}
+    TopLevelEquipment --> lilw_write: {Uuid of TopLevelEquipment}
+    lilw_write -> EquipmentDetails: {Uuid of TopLevelEquipment}
+    EquipmentDetails --> lilw_write: {EquipmentCategory}
+
+    alt If  EquipmentCategory == FULL_OUTDOOR
+        note over lilw_write
+            - UPDATE ltpScore (consider tests for Slot and Port as passed)
+            - consider test for (ODU Product Code as passed)
+        end note
+    else If  EquipmentCategory == SUBRACK 
+
+        lilw_write -> LtpAugment: {mountName, Uuid of AirInterface} (apiKeyAuth)
+        LtpAugment --> lilw_write: list of EquipmentUuid
+        
+        loop for each EquipmentUuid
+            lilw_write -> EquipmentDetails: {Uuid}
+            EquipmentDetails --> lilw_write: {EquipmentCategory, EquipmentType, PartTypeIdentifier}
+
+            note over lilw_write
+                If EquipmentCategory == OUTDOOR_UNIT
+                - TEST: **request.Body#PlanningData::ODUProductCode** == PartTypeIdentifier
+                - UPDATE ltpScore 
+                - Save Uuid of ODU
+            end note
+            note over lilw_write
+                If EquipmentCategory == MODEM 
+                Save Uuid of MODEM
+            end note
+
+        end loop
+
+        lilw_write -> HolderLabel: {Uuid of TopLevelEquipment}
+        HolderLabel   --> lilw_write: list of Holders with {occupyingFru, vendorLabel}
+
+        note over lilw_write
+            For the Holder with occupyingFru == Uuid of MODEM
+            TEST: **request.Body#PlanningData::cardSlot**(*) == vendorLabel(*)
+            UPDATE ltpScore 
+            (*) REGEX match specified in // applied to the string
+        end note
+
+        lilw_write -> HolderLabel: {Uuid of MODEM}
+        HolderLabel   --> lilw_write: list of Holders with {occupyingFru, vendorLabel}
+
+        note over lilw_write
+            For the Holder with occupyingFru == Uuid of ODU
+            TEST: **request.Body#PlanningData::IFPort**(*) == vendorLabel(*)
+            UPDATE ltpScore 
+            (*) REGEX match specified in // applied to the string
+        end note
+
+    end alt
+
+end loop
+
+note over lilw_write
+       RESULT: List of all LTPs with respective LtpUuid and ltpScore
+end note
+deactivate lilw_write
+@enduml

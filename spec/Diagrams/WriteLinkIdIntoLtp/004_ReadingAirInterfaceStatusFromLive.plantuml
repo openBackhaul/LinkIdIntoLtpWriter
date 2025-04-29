@@ -1,0 +1,20 @@
+@startuml 004_ReadingAirInterfaceStatusFromLive
+skinparam responseMessageBelowArrow true
+
+title
+RequestForWritingLinkIdIntoLtpCausesReadingAirInterfaceStatusFromLive
+end title
+
+participant "External" as external
+participant "LILW://v1/write-link-id-into-ltp" as lilw_write
+participant "MWDI://core-model-1-4:network-control-domain=live/control-construct={mount-name}/logical-termination-point={uuid}\n/layer-protocol={local-id}/air-interface-2-0:air-interface-pac/air-interface-status?fields=tx-level-cur;rx-level-cur;tx-frequency-cur;rx-frequency-cur;transmission-mode-cur;snir-cur" as MwdiStatus
+
+
+external -> lilw_write: {linkId, mountNameA, mountNameB, {planning-data}} (apiKeyAuth)
+
+activate lilw_write
+lilw_write -> MwdiStatus: {mountName, uuid, localId } (apiKeyAuth)
+MwdiStatus--> lilw_write: {txLevelCur, rxLevelCur, txFrequencyCur,\n rxFrequencyCur, transmissionModeCur, snirCur}
+deactivate lilw_write
+
+@enduml

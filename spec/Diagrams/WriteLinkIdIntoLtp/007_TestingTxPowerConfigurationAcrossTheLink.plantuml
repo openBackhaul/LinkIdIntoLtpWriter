@@ -1,0 +1,59 @@
+@startuml 007_TestingTxPowerConfigurationAcrossTheLink
+skinparam responseMessageBelowArrow true
+
+title
+RequestForWritingLinkIdIntoLtpCausesTestingTxPowerConfigurationAcrossTheLink
+end title
+
+participant "External" as external
+participant "LILW://v1/write-link-id-into-ltp" as lilw_write
+participant "<i>RequestForWritingLinkIdIntoLtpCausesReadingAirInterfaceStatusFromLive</i>" as mwdi_status
+participant "<i>RequestForWritingLinkIdIntoLtpCausesReadingAirInterfaceConfigurationFromCache</i>" as mwdi_config
+participant "MWDG://core-model-1-4:network-control-domain=live/control-construct={mountName}/logical-termination-point={uuid}/\nlayer-protocol={localId}/air-interface-2-0:air-interface-pac/air-interface-configuration/tx-power" as mwdg
+
+
+external -> lilw_write: {linkId, mountNameA, mountNameB, {planning-data}} (apiKeyAuth)
+activate lilw_write
+loop for each of the two MountNames of link-ends A and B
+
+
+    mwdi_status --> lilw_write: {snirCur} 
+
+    note over lilw_write
+        The SNIR value should not be lower than the value specified in ##reference intefer profile instance##
+        If the measured value is lower than this specified value, then this this test must be aborted
+    end note
+
+    note over lilw_write
+        Save the configured txPower value
+    end note
+
+    mwdi_config --> lilw_write: {tx-power}
+
+    loop for each TxPower configuration: (which exactly?)
+
+        lilw_write -> mwdg: {mountName, LtpUuid, LocalId, txPowerValue} (apiKeyAuth)
+        mwdg --> lilw_write: 204
+        note over lilw_write
+            wait for the number of seconds specified in ##reference integer profile instance##
+        end note
+        note over lilw_write
+            read the rxLevel from the **<u>OPPOSITE</u>** link end (i.e. The other mountName)
+        end note
+        mwdi_status --> lilw_write: {rxLevelCur}
+        note over lilw_write
+            Evaluate whether the expected reaction at the opposite link end has occured and
+            UPDATE the **candidateScore**
+        end note
+    end loop
+
+    note over lilw_write
+        Restore the initial configuration value previously saved
+    end note
+
+    lilw_write -> mwdg: {mountName, LtpUuid, LocalId, txPowerValue} (apiKeyAuth)
+    mwdg --> lilw_write: 204
+
+end loop
+deactivate lilw_write
+@enduml

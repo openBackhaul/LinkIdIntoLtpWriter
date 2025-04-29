@@ -1,0 +1,20 @@
+@startuml 010_ReadingExternalLabelOfLtps
+skinparam responseMessageBelowArrow true
+
+title
+RequestForWritingLinkIdIntoLtpCausesReadingExternalLabelOfLtps
+end title
+
+participant "External" as external
+participant "LILW://v1/write-link-id-into-ltp" as lilw_write
+participant "MWDI://core-model-1-4:network-control-domain=cache/control-construct={mountMame}\n?fields=logical-termination-point(uuid;ltp-augment-1-0:ltp-augment-pac(external-label))" as externalLabel
+
+
+
+external -> lilw_write: {linkId, mountNameA, mountNameB, {planning-data}} (apiKeyAuth)
+
+activate lilw_write 
+lilw_write -> externalLabel: {mountName}
+externalLabel --> lilw_write: {LtpUuid, externalLabel}
+deactivate lilw_write
+@enduml

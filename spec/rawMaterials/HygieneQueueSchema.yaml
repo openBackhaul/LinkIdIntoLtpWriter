@@ -1,0 +1,59 @@
+$schema: "https://json-schema.org/draft/2020-12/schema"
+type: object
+properties:
+  LinkID:
+    type: string
+  MountNameA:
+    type: string
+  MountNameB:
+    type: string
+  PlanningData:
+    type: object
+    properties:
+      ModemCard:
+        type: string
+      CardSlot:
+        type: string
+      ODUProductCode:
+        type: string
+      AccessPort:
+        type: string
+      UpperFrequency:
+        type: number
+      LowerFrequency:
+        type: number
+      BandPosition:
+        type: string
+      Bandwidth:
+        type: number
+      MinimumModulationScheme:
+        type: string
+      MaximumModulationScheme:
+        type: string
+      ClearSkyModulation:
+        type: string
+    required:
+      - ModemCard
+      - CardSlot
+      - ODUProductCode
+      - AccessPort
+      - UpperFrequency
+      - LowerFrequency
+      - BandPosition
+      - Bandwidth
+      - MinimumModulationScheme
+      - MaximumModulationScheme
+      - ClearSkyModulation
+  ReliabilityScore:
+    type: number
+    minimum: 0
+    maximum: 1
+  PriorityBand:
+    type: string
+required:
+  - LinkID
+  - MountNameA
+  - MountNameB
+  - PlanningData
+  - ReliabilityScore
+  - PriorityBand

@@ -1,0 +1,32 @@
+@startuml 000x_CyclicLoadingOperationOnHygieneQueue
+skinparam responseMessageBelowArrow true
+
+title
+PromptForEmbeddingCausesCyclicOperationOnHygieneQueue
+end title
+
+participant "RO" as ro
+participant "LILW://v1/embed-yourself" as lilw_embed
+participant "ElasticSearch:" as HQ
+participant "LILW://v1/write-link-id-into-ltp" as lilw_write
+
+ro -> lilw_embed
+
+activate lilw_embed
+
+loop for each entry in Hygiene Queue
+
+    note over HQ
+        Retreive entry from queue
+    end note
+
+    lilw_embed -> HQ
+    HQ --> lilw_embed: {linkId, mountNameA, mountNameB, {planning-data}}
+
+    lilw_embed -> lilw_write: {linkId, mountNameA, mountNameB, {planning-data}}
+end loop
+
+
+deactivate lilw_embed
+
+@enduml

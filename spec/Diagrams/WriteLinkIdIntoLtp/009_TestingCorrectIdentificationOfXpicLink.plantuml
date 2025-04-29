@@ -1,0 +1,54 @@
+@startuml 009_TestingCorrectIdentificationOfXpicLink
+skinparam responseMessageBelowArrow true
+
+title
+RequestForWritingLinkIdIntoLtpCausesTestingCorrectIdentificationOfXpicLink
+end title
+
+participant "External" as external
+participant "LILW://v1/write-link-id-into-ltp" as lilw_write
+participant "<i>RequestForWritingLinkIdIntoLtpCausesReadingAirInterfaceStatusFromLive</i>" as mwdi_status
+participant "MWDG://core-model-1-4:network-control-domain=live/control-construct={mountName}/logical-termination-point={uuid}/\nlayer-protocol={localId}/air-interface-2-0:air-interface-pac/air-interface-configuration/tx-power" as mwdg
+
+
+external -> lilw_write: {linkId, mountNameA, mountNameB, {planning-data}} (apiKeyAuth)
+activate lilw_write
+
+
+note over lilw_write
+    Check whether XPIC is up.
+end note
+
+mwdi_status --> lilw_write: {xpic-is-up}
+
+note over lilw_write
+    If XPIC is not up, then this test (callback) must be aborted and omitted.
+end note
+
+note over lilw_write
+    Switch transmitter off
+end note
+lilw_write -> mwdg: {mountName, LtpUuid, LocalId, transmitterIsOn=FALSE} (apiKeyAuth)
+
+note over lilw_write
+    Wait the time period specified in ##reference integer profile##
+end note
+
+note over lilw_write
+    Check whether something is received at the **<u>OPPOSITE</u>** link end (i.e. The other mountName)
+end note
+
+mwdi_status --> lilw_write: {rxLevelCur}
+
+note over lilw_write
+    Evaluate whether the measured rxLevelCur for the AirInterface is as expected (-99?) and
+    UPDATE the candidateScore
+end note
+
+note over lilw_write
+    Switch the transmitter back on
+end note
+lilw_write -> mwdg: {mountName, LtpUuid, LocalId, transmitterIsOn=FALSE} (apiKeyAuth)
+
+deactivate lilw_write
+@enduml
