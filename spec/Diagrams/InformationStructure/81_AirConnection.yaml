@@ -12,10 +12,10 @@ link:
           local-id:
             type: string
             description: >
-              'LinkId
+              'LinkId in RunningDS, localId in OperationalDS
               candidate: from [/v1/write-link-id-into-ltp$request.body#link-id]
               running: from candidate
-              operational: from running
+              operational: string that is unique within the scope of the list
           linktp:
             type: array
             x-key: local-id
@@ -27,7 +27,6 @@ link:
                 - local-id
                 - _cc
                 - _ltp
-                - _lp
               properties:
                 local-id:
                   type: string
@@ -35,20 +34,36 @@ link:
                   type: string
                   description: >
                     'MountName
-                    candidate: from [/network-control-domain=candidate/forwarding-domain=management-plane-transport/forwarding-construct=[deviceName]/fctp=management-plane-transport-client/_cc]
-                    running: from candidate
+                    candidate: from ???
+                    running: from ???
                     operational: from ???
                 _ltp:
                   type: string
                   description: >
-                    '
+                    'Identifier of the LTP
                     candidate: from ???
                     running: from ???
                     operational: from ???
-                _lp:
+          scores:
+            type: array
+            x-key: link-id
+            minItems: 1
+            items:
+              type: object
+              required:
+                - link-id
+                - candidate-score
+              properties:
+                link-id:
                   type: string
                   description: >
-                    '
+                    'LinkId
                     candidate: from ???
                     running: from ???
+                    operational: from ???
+                candidate-score:
+                  description: >
+                    'Probability of being the right LinkId of the connection between the referenced two LTPs
+                    candidate: 1
+                    running: 1
                     operational: from ???
