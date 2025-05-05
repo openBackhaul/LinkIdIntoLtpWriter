@@ -8,6 +8,8 @@ link:
         required:
           - local-id
           - linktp
+          - scores
+          - calculatedLinkId
         properties:
           local-id:
             type: string
@@ -58,12 +60,19 @@ link:
                   type: string
                   description: >
                     'LinkId
-                    candidate: from ???
-                    running: from ???
-                    operational: from ???
+                    candidate: from [/v1/write-link-id-into-ltp$request.body#link-id]
+                    running: from candidate
+                    operational: from [v1-create-link-objects]
                 candidate-score:
                   description: >
                     'Probability of being the right LinkId of the connection between the referenced two LTPs
-                    candidate: 1
-                    running: 1
-                    operational: from ???
+                    candidate: 100
+                    running: 100
+                    operational: from [v1-calculate-link-id-score]
+          calculatedLinkId:
+            type: string
+            description: >
+              'LinkId in RunningDS, calculation result in OperationalDS
+              candidate: from [/v1/write-link-id-into-ltp$request.body#link-id]
+              running: from candidate
+              operational: from [v1-calculate-distribution-of-link-ids]

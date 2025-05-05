@@ -1,0 +1,36 @@
+validation-script:
+  type: array
+  x-key: _trigger-function
+  description: >
+    'List of the definitions of validation sequences
+    The defined sequences are input to the generic ValidationOrchestrator Function
+    ValidationOrchestrator is responding 204, if all Functions in the sequence responded 204 before, or any other response code resulted during executing the sequence'
+  items:
+    type: object
+    required:
+      - _trigger-function
+      - sequence
+    properties:
+      _trigger-function:
+        type: string
+        description: >
+          'Reference towards an entry in the list of Functions (value must be unique and invariant)
+          It is assumed that the referenced Function just changed the contents of the CandidateDS'
+      sequence:
+        type: array
+        x-key: step-number
+        description: 'Sequence of validation test Functions that shall be executed on the contents of the CandidateDS'
+        items:
+          type: object
+          required:
+            - step-number
+            - _function-name
+          properties:
+            step-number:
+              type: integer
+              description: 'LocalId of this step (value must be unique and invariant)'
+            _function-name:
+              type: string
+              description: >
+                'Reference towards an entry in the list of Functions
+                It is assumed that the referenced Function is executing a validation test on the contents of the CandidateDS'

@@ -20,7 +20,7 @@ domain-controller:
           type: object
           required:
             - time-of-latest-change
-            - affected-fc
+            - affected-link
           properties:
             time-of-latest-change:
               type: string
