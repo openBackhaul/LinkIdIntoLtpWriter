@@ -1,0 +1,40 @@
+forwarding-construct:
+  type: array
+  x-key: local-id
+  items:
+    type: object
+    required:
+      - local-id
+      - fctp
+      - _links
+    properties:
+      local-id:
+        type: string
+        description: 'Value must be unique within this list and invariant'
+      fctp:
+        type: array
+        x-key: _cc
+        minItems: 2
+        maxItems: 2
+        items:
+          type: object
+          required:
+            - _cc
+          properties:
+            _cc:
+              type: string
+              description: >
+                'MountName
+                candidate: from [LILW://v1/add-planned-microwave-link$request.body#mountNameA] and [LILW://v1/add-planned-microwave-link$request.body#mountNameB]
+                running: from candidate
+                operational: from running'
+      _links:
+        type: array
+        minItems: 1
+        items:
+          type: string
+          description: >
+            'LinkId in RunningDS, localId in OperationalDS
+            candidate: from [/v1/add-planned-microwave-link$request.body#link-id]
+            running: from candidate
+            operational: string that is unique within the scope of the list of Links'

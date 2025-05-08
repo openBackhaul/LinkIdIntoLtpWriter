@@ -2,77 +2,72 @@ link:
   type: array
   x-key: local-id
   items:
-    oneOf:
-      - description: 'airLink'
-        type: object
-        required:
-          - local-id
-          - linktp
-          - scores
-          - calculatedLinkId
-        properties:
-          local-id:
-            type: string
-            description: >
-              'LinkId in RunningDS, localId in OperationalDS
-              candidate: from [/v1/write-link-id-into-ltp$request.body#link-id]
-              running: from candidate
-              operational: string that is unique within the scope of the list
-          linktp:
-            type: array
-            x-key: local-id
-            minItems: 2
-            maxItems: 2
-            items:
-              type: object
-              required:
-                - local-id
-                - _cc
-                - _ltp
-              properties:
-                local-id:
-                  type: string
-                _cc:
-                  type: string
-                  description: >
-                    'MountName
-                    candidate: from ???
-                    running: from ???
-                    operational: from ???
-                _ltp:
-                  type: string
-                  description: >
-                    'Identifier of the LTP
-                    candidate: from ???
-                    running: from ???
-                    operational: from ???
-          scores:
-            type: array
-            x-key: link-id
-            minItems: 1
-            items:
-              type: object
-              required:
-                - link-id
-                - candidate-score
-              properties:
-                link-id:
-                  type: string
-                  description: >
-                    'LinkId
-                    candidate: from [/v1/write-link-id-into-ltp$request.body#link-id]
-                    running: from candidate
-                    operational: from [v1-create-link-objects]
-                candidate-score:
-                  description: >
-                    'Probability of being the right LinkId of the connection between the referenced two LTPs
-                    candidate: 100
-                    running: 100
-                    operational: from [v1-calculate-link-id-score]
-          calculatedLinkId:
-            type: string
-            description: >
-              'LinkId in RunningDS, calculation result in OperationalDS
-              candidate: from [/v1/write-link-id-into-ltp$request.body#link-id]
-              running: from candidate
-              operational: from [v1-calculate-distribution-of-link-ids]
+    type: object
+    required:
+      - local-id
+      - linktp
+      - scores
+      - calculatedLinkId
+    properties:
+      local-id:
+        type: string
+        description: >
+          'LinkId in RunningDS, localId in OperationalDS (value must be unique and invariant)
+          candidate: from [/v1/add-planned-microwave-link$request.body#link-id]
+          running: from candidate
+          operational: string that is unique within the scope of the list
+      linktp:
+        type: array
+        x-key: local-id
+        minItems: 2
+        maxItems: 2
+        items:
+          type: object
+          required:
+            - _cc
+            - _ltp
+          properties:
+            _cc:
+              type: string
+              description: >
+                'MountName
+                candidate: from [LILW://v1/add-planned-microwave-link$request.body#mountNameA] and [LILW://v1/add-planned-microwave-link$request.body#mountNameB]
+                running: from candidate
+                operational: from [MWDI://core-model-1-4:network-control-domain=cache/control-construct={MountName}?fields=control-construct-pac(external-label)]
+            _ltp:
+              type: string
+              description: >
+                'LinkId
+                candidate: from [LILW://v1/add-planned-microwave-link$request.body#linkId]
+                running: from candidate
+                operational: from [v1-calculate-ltp-external-label reading MWDI://core-model-1-4:network-control-domain=cache/control-construct={MountName}?fields=logical-termination-point(uuid) for MWDI://core-model-1-4:network-control-domain=cache/control-construct={MountName}?fields=logical-termination-point(layer-protocol(layer-protocol-name))==LAYER_PROTOCOL_NAME_TYPE_AIR_LAYER]
+      scores:
+        type: array
+        x-key: link-id
+        minItems: 1
+        items:
+          type: object
+          required:
+            - link-id
+            - candidate-score
+          properties:
+            link-id:
+              type: string
+              description: >
+                'LinkId
+                candidate: from [/v1/add-planned-microwave-link$request.body#link-id]
+                running: from candidate
+                operational: from [v1-calculate-ltp-external-label]
+            candidate-score:
+              description: >
+                'Probability of being the right LinkId of the connection between the referenced two LTPs
+                candidate: 100
+                running: 100
+                operational: from [v1-calculate-ltp-external-label]
+      calculatedLinkId:
+        type: string
+        description: >
+          'LinkId in RunningDS, calculation result in OperationalDS
+          candidate: from [/v1/add-planned-microwave-link$request.body#link-id]
+          running: from candidate
+          operational: from [v1-calculate-ltp-external-label]

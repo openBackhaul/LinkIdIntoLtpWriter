@@ -12,7 +12,7 @@ function:
         type: string
         pattern: '^(v[0-9]{1,2})((-[a-z]{1,}){1,})$'
         description: 'In case of externally available services, the syntax of the path has to be translated to fit the pattern'
-        example: 'v1-write-link-id'
+        example: 'v1-add-planned-microwave-link'
       parameter:
         type: array
         x-key: parameter-name
@@ -34,3 +34,24 @@ function:
             parameter-definition:
               type: string
               description: 'Invariant description of the parameter'
+example:
+  - function-name:
+    parameter:
+      - parameter-name:
+        parameter-value:
+        parameter-definition:
+  - function-name:
+    parameter:
+      - parameter-name:
+        parameter-value:
+        parameter-definition:
+  - function-name:
+    parameter:
+      - parameter-name:
+        parameter-value:
+        parameter-definition:
+  - function-name:
+    parameter:
+      - parameter-name:
+        parameter-value:
+        parameter-definition:
