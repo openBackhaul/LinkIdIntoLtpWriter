@@ -1,42 +1,10 @@
-# Information Structure  
-
-The internal data stores shall be structured according to the NMDA concepts ([IETF RFC 8342](https://datatracker.ietf.org/doc/html/rfc8342)).
-
-The specified data stores are assigned the following semantic meanings:  
-- The offered services (paths at API) shall allow transferring the planning data into the CandidateDataStore.  
-- After some validation tests, the planning data shall be copied into the RunningDataStore.  
-- The information provided by the devices in the live (via MWDI, mostly from cache) network shall be consolidated into the OperationalDataStore.  
-
-<img src="./CategoriesOfFunctions.png" alt="CategoriesOfFunctions" width="700" style="display: block; margin: 0 auto"/>  
-
-This means for the Link objects:  
-- A Link object inside the RunningDS is describing a planned microwave link that _is actually_ identified with a LinkID.  
-- The Link objects inside the OperationalDS are describing relationships between AirInterface objects that _might_ correspond to a planned microwave link with a specific LinkID.  
-
-Because the devices cannot provide information about the connections in between them, inside the OperationalDS ... 
-- ... an AirInterface might be referenced by several Link objects that are connecting it with several other AirInterfaces and ...  
-- ... the individual Link object might correspond to diverse planned microwave links.  
-
-<img src="./MeaningOfLinks.png" alt="MeaningOfLinks" width="350" style="display: block; margin: 0 auto"/>  
-
-Each of the Link objects in the OperationalDS defines a set of Scores that assess the likelihood that this Link object corresponds to one of the planned microwave links.
-
-So, the overall problem of writing the most likely LinkID into the externalLabel attribute at some AirInterface is sub-structured into the following activities on the data stores:  
-- The respective Score for a Link object in the OperationalDS to correspond to one of the planned microwave links in the RunningDS is estimated. This calculation compares the information about the planned microwave links in RunningDS with the information retrieved from the actual devices in the OperationalDS. The _resulting estimate is documented at the Link object in the OperationalDS_.  
-- Based on the estimated Scores, the most likely distribution of the LinkIDs across the Link objects is calculated. Rules (such as: each LinkID may be assigned just once) must be observed. The _resulting assignments of LinkIDs are documented in the calculatedLinkId attribute at the Link object in the OperationalDS_.  
-- If there would be differences between the values of the calculatedLinkId attribute at the Link objects and the LinkId attribute at the AirInterface objects (both in OperationalDS), the values from the calculatedLinkId attribute at the Link objects would have to be configured into the devices.  
-
-The information within the three data stores shall have the following identical structure:  
-
-<img src="./InformationStructure.png" alt="InformationStructure" width="700" style="display: block; margin: 0 auto"/>  
-
-Its top level element is a [DomainController](./schemas/00_DomainController.yaml) that holds the parameter settings of the [Functions](./schemas/01_Function.yaml) and the [CurrentAlarms](./schemas/02_CurrentAlarm.yaml) within the LinkIdintoLtpWriter.  
-
-Apart from that it holds four different documentations of the same [Network](./schemas/03_NetworkControlDomain.yaml) (running, operational, startup and candidate), which is exclusively composed from [Devices](./schemas/21_Device.yaml) and [AirLinks](./schemas/22_AirLink.yaml).  
-
 # List of Functions  
 
+<img src="./diagrams/CategoriesOfFunctions.png" alt="CategoriesOfFunctions" width="700" style="display: block; margin: 0 auto"/>  
+
 ### Interpretation  
+_(potentially it would make sense to facilitate multiple microwave links being passed in a single request;_  
+_would that comply with the status of the consuming application?)_
 - /v1/add-planned-microwave-link  
   - Copies content of RunningDS into CandidateDS  
   - Creates the specified CC objects and AirInterface LTPs in CandidateDS (may already be in place)  
@@ -69,11 +37,13 @@ Apart from that it holds four different documentations of the same [Network](./s
     - Responds the first ResponseCode different from 204 and terminates  
 - v1-ensure-unique-link-ids  
   Ensures that each LinkID is unique in the list of planned microwave links  
+
+_(further examples to be potentially removed by ApplicationOwner:)_
 - v1-prevent-redundant-fcs  
   Ensures that each pair of CCs is referenced by a maximum of one FC object  
 - v1-prevent-redundant-links  
   Ensures that each pair of AirInterface LTPs is referenced by a maximum of one Link object  
-- v1-ensure-every-fc-being-routed  
+- v1-ensure-every-fc-having-at-least-one-link
   Ensures that each FC object is referencing at least one Link object  
 
 ### Measurement  
@@ -103,7 +73,10 @@ Apart from that it holds four different documentations of the same [Network](./s
 
 ### Monitoring  
 - ./. (cyclic operation)  
-- v1-check-if-cc-external-label-equal-to-mount-point
+
+_(further examples to be potentially removed by ApplicationOwner:)_
+- v1-check-if-cc-external-label-equal-to-mount-point  
+- v1-check-if-operational-tx-power-is-below-planned  
 
 ### Implementation  
 - v1-implementation-orchestrator (cyclic operation)  
@@ -122,13 +95,12 @@ Apart from that it holds four different documentations of the same [Network](./s
       ELSE
       - Sends ErrorCode [to be defined#3]
 
+### Concepts for defining ImplementationFunctions  
+During discussions we found out that:  
+- With increasing number of deviations between RunningDS and OperationalDS some deadlock might occur.  
+- It is unclear how roll-back of partly executed implementation sequences could be defined in case of idempotent functions.  
 
-
-v1-calculate-ltp-external-label   (does its stuff, which results in a new value in calculatedLinkId)
-v1-check-for-wrong-externalLabel => 777 (conflict with existing entry in externalLabel) in CA  
-=> v1-implementation-orchestrator => v1-fix-777 (deletes value in externalLabel) => 204/4xy for documentation in CA
-v1-check-for-wrong-externalLabel => deletes 777 from CA
-v1-check-for-missing-externalLabel => 888 (calculatedLinkId not in externalLabel) in CA
-=> v1-implementation-orchestrator => v1-fix-888 (copies value to externalLabel) => 204/4xy for documentation in CA
-v1-check-for-missing-externalLabel => deletes 888 from CA
-
+The following concepts should help minimizing the risk of dead lock and partly executed implementation sequences:  
+- Implementation sequences should be short (this is why the information structure is now limiting to a single function).  
+- Each implementation sequence shall terminate in a stable state more close to the target state defined in the RunningDS.  
+- Steps that are increasing the options in the total system (e.g. releasing limited resources) shall be done first. Steps that are narrowing down the options in the total system (e.g. allocating resources) shall be done in a separated sequence later.  

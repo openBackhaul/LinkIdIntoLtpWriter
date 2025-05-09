@@ -10,7 +10,12 @@ forwarding-construct:
     properties:
       local-id:
         type: string
-        description: 'Value must be unique within this list and invariant'
+        description: >
+          'String shall be composed from [lower MountName]-[higher MountName] (value must be unique and invariant)
+          example: 305251111-305252222
+          candidate: from [LILW://v1/add-planned-microwave-link$request.body#mountNameA] and [LILW://v1/add-planned-microwave-link$request.body#mountNameB]
+          running: from candidate
+          operational: from running'
       fctp:
         type: array
         x-key: _cc

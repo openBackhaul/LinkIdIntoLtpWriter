@@ -1,4 +1,4 @@
-validation-script:
+validation-sequence:
   type: array
   x-key: _trigger-function
   description: >
@@ -25,30 +25,32 @@ validation-script:
           type: object
           required:
             - step-number
-            - _function-name
+            - _validation-function
           properties:
             step-number:
               type: integer
               description: 'Sequential number of the validation test (value must be unique and invariant)'
-            _function-name:
+            _validation-function:
               type: string
               description: >
                 'Reference towards an entry in the list of Functions
                 Only Functions for executing a validation test on the contents of the CandidateDS are allowed to be referenced'
 example:
+  - _trigger-function: v1-add-planned-microwave-link 
+    sequence:
+      - step-number: 0
+        _validation-function: v1-ensure-unique-link-ids
+      - step-number: 1
+        _validation-function: 
   - _trigger-function:
     sequence:
       - step-number: 0
-        _function-name:
+        _validation-function:
   - _trigger-function:
     sequence:
       - step-number: 0
-        _function-name:
+        _validation-function:
   - _trigger-function:
     sequence:
       - step-number: 0
-        _function-name:
-  - _trigger-function:
-    sequence:
-      - step-number: 0
-        _function-name:
+        _validation-function:

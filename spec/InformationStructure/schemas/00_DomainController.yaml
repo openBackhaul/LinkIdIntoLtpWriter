@@ -2,7 +2,7 @@ domain-controller:
   type: object
   required:
     - function
-    - validation-script
+    - validation-sequence
     - error-code
     - alarm-pac
     - network-control-domain
@@ -13,12 +13,12 @@ domain-controller:
       items:
         type: object
         description: 'function - see 02_Function.yaml'
-    validation-script:
+    validation-sequence:
       type: array
       x-key: _trigger-function
       items:
         type: object
-        description: 'ValidationScript - see 03_ValidationScript.yaml'
+        description: 'ValidationSequence - see 03_ValidationSequence.yaml'
     error-code:
       type: array
       x-key: error-code
