@@ -36,10 +36,10 @@ validation-sequence:
                 'Reference towards an entry in the list of Functions
                 Only Functions for executing a validation test on the contents of the CandidateDS are allowed to be referenced'
 example:
-  - _trigger-function: v1-add-planned-microwave-link 
+  - _trigger-function: 'v1-add-planned-microwave-link' 
     sequence:
       - step-number: 0
-        _validation-function: v1-ensure-unique-link-ids
+        _validation-function: 'v1-ensure-unique-link-ids'
       - step-number: 1
         _validation-function: 
   - _trigger-function:
