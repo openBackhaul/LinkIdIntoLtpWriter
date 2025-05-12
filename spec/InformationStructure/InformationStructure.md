@@ -30,13 +30,13 @@ The information within the three data stores shall have the following identical 
 
 <img src="./diagrams/InformationStructure.png" alt="InformationStructure" width="700" style="display: block; margin: 0 auto"/>  
 
-Its top level element is a [DomainController](./schemas/00_DomainController.yaml) that holds  
-- the parameter settings of the [Functions](./schemas/01_Function.yaml),  
-- definitions of [ValidationSequences](./schemas/03_ValidationSequence.yaml),  
-- definitions of [ErrorCodes](./schemas/05_ErrorCode.yaml) including their countermeasures,  
-- and the [CurrentAlarms](./schemas/02_CurrentAlarm.yaml) within the LinkIdintoLtpWriter.  
+Its top level element is a [DomainController (DC)](./schemas/00_DomainController.yaml) that holds  
+- the parameter settings of the [Functions (F)](./schemas/01_Function.yaml),  
+- definitions of [ValidationSequences (VS)](./schemas/03_ValidationSequence.yaml),  
+- definitions of [ErrorCodes (EC)](./schemas/05_ErrorCode.yaml) including their countermeasures,  
+- and the [CurrentAlarms (CA)](./schemas/02_CurrentAlarm.yaml) within the LinkIdintoLtpWriter.  
 
-Apart from that it holds four different documentations of the same [Network](./schemas/03_NetworkControlDomain.yaml) (running, operational, startup and candidate), which is composed from  
-- [Devices](./schemas/21_Device.yaml),  
-- [NetworkConnections](./schemas/23_NetworkConnection.yaml)  
-- and [AirLinks](./schemas/22_AirLink.yaml).  
+Apart from that it holds four different documentations of the same [Network (NCD)](./schemas/03_NetworkControlDomain.yaml) (running, operational, startup and candidate), which is composed from  
+- [Devices (CC)](./schemas/21_Device.yaml),  
+- [NetworkConnections (FC)](./schemas/23_NetworkConnection.yaml)  
+- and [AirLinks (L)](./schemas/22_AirLink.yaml).  
