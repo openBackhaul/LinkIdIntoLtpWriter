@@ -49,7 +49,7 @@ link:
           local-id:
             type: string
             description: >
-              'localId (value must be unique and invariant)
+              'Identifier that is unique within the list of Links
               operational: string that is unique within the scope of the list'
           linktp:
             type: array

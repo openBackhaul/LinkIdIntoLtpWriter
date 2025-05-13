@@ -44,9 +44,7 @@ domain-controller:
                 description: '_AffectedLink - see 06_CurrentAlarm.yaml'
     network-control-domain:
       type: array
-      x-key: local-id
-      minItems: 4
-      maxItems: 4
+      x-key: storage
       items:
         type: object
         description: >

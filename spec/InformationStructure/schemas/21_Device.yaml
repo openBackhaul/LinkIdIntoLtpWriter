@@ -1,13 +1,13 @@
 control-construct:
   type: array
-  x-key: local-id
+  x-key: element-name
   items:
     type: object
     required:
-      - local-id
+      - element-name
       - logical-termination-point
     properties:
-      local-id:
+      element-name:
         type: string
         description: >
           'MountName
@@ -28,7 +28,7 @@ control-construct:
             local-id:
               type: string
               description: >
-                'LinkId
+                'Identifier that is unique within the list of Interfaces
                 candidate: from [LILW://v1/add-planned-microwave-link$request.body#linkId]
                 running: from candidate
                 operational: from [MWDI://core-model-1-4:network-control-domain=cache/control-construct={MountName}?fields=logical-termination-point(uuid) for MWDI://core-model-1-4:network-control-domain=cache/control-construct={MountName}?fields=logical-termination-point(layer-protocol(layer-protocol-name))==LAYER_PROTOCOL_NAME_TYPE_AIR_LAYER]

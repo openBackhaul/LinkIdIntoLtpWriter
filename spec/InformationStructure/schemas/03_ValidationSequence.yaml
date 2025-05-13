@@ -41,16 +41,22 @@ example:
       - step-number: 0
         _validation-function: 'v1-ensure-unique-link-ids'
       - step-number: 1
-        _validation-function: 
-  - _trigger-function:
-    sequence:
-      - step-number: 0
         _validation-function:
   - _trigger-function:
     sequence:
       - step-number: 0
         _validation-function:
+      - step-number: 1
+        _validation-function:
   - _trigger-function:
     sequence:
       - step-number: 0
+        _validation-function:
+      - step-number: 1
+        _validation-function:
+  - _trigger-function:
+    sequence:
+      - step-number: 0
+        _validation-function:
+      - step-number: 1
         _validation-function:

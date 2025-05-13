@@ -12,7 +12,7 @@ affected-link:
     properties:
       _affected-link:
         type: string
-        description: 'local-id (LinkId) of the Link that has problems (value must be unique and invariant)'
+        description: 'local-id of the Link that has problems (value must be unique and invariant)'
       priority-band:
         type: string
         enum:
@@ -33,7 +33,7 @@ affected-link:
           properties:
             _affected-cc:
               type: string
-              description: 'local-id (MountName) of a ControlConstruct that has problems (value must be unique and invariant)'
+              description: 'element-name of a ControlConstruct that has problems (value must be unique and invariant)'
             error:
               type: array
               x-key: _error-code
@@ -56,7 +56,7 @@ affected-link:
                 properties:
                   _affected-ltp:
                     type: string
-                    description: 'local-id (LinkId) of the LogicalTerminationPoint that has problems (value must be unique and invariant)'
+                    description: 'local-id of the LogicalTerminationPoint that has problems (value must be unique and invariant)'
                   error:
                     type: array
                     x-key: _error-code
@@ -76,7 +76,7 @@ components:
       properties:
         _error-code:
           type: integer
-          description: 'local-id (ErrorCode) of the definition of the problem in context of this application (value must be unique and invariant)'
+          description: 'error-code of the definition of the problem in context of this application (value must be unique and invariant)'
         date-of-creation:
           type: string
           pattern: '^\d{4}-\d{2}-\d{2}T\d{2}:\d{2}:\d{2}(\.\d+)?(Z|[\+\-]\d{2}:\d{2})$'

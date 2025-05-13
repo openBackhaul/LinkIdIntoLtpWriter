@@ -1,15 +1,16 @@
 network-control-domain:
   type: array
-  x-key: local-id
+  x-key: storage
   items:
     type: object
     required:
-      - local-id
+      - storage
+      - profile
       - control-construct
       - link
       - forwarding-domain
     properties:
-      local-id:
+      storage:
         type: string
         enum:
           - 'candidate'
@@ -19,7 +20,7 @@ network-control-domain:
         description: 'NMDA like data storages that document the NetworkControlDomain'
       control-construct:
         type: array
-        x-key: local-id
+        x-key: element-name
         items:
           type: object
           description: 'ControlConstruct - see 21_Device.yaml'    
@@ -31,17 +32,17 @@ network-control-domain:
           description: 'Link - see 22_AirLink.yaml'    
       forwarding-domain:
         type: array
-        x-key: local-id
+        x-key: forwarding-domain-name
         minItems: 1
         maxItems: 1
         items:
           type: object
           description: 'network'
           required:
-            - local-id
+            - forwarding-domain-name
             - forwarding-construct
           properties:
-            local-id:
+            forwarding-domain-name:
               type: string
               enum:
                 - 'network'
