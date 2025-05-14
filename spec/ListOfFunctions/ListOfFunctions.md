@@ -5,23 +5,23 @@
 ### Interpretation  
 _(potentially it would make sense to facilitate multiple microwave links being passed in a single request;_  
 _would that comply with the status of the consuming application?)_
-- /v1/add-planned-microwave-link  
+- v1-add-planned-microwave-link  
   - Copies content of RunningDS into CandidateDS  
   - Creates the specified CC objects and AirInterface LTPs in CandidateDS (may already be in place)  
   - Creates an FC object between the specified CCs in CandidateDS (may already be in place)  
   - Creates a new Link object between the specified AirInterface LTPs in CandidateDS  
-  - Calls v1-validation-orchestrator  
+  - Calls p1-validation-orchestrator  
   - IF ResponseCode==204  
     - Copies content of CandidateDS into RunningDS  
     - Responds 204 to requestor  
     ELSE  
     - Responds ResponseCode to requestor  
-- /v1/remove-planned-microwave-link  
+- v1-remove-planned-microwave-link  
   - Copies content of RunningDS into CandidateDS  
   - Deletes the Link object with the specified LinkID from CandidateDS  
   - Deletes all FC objects that do not reference any Link object from CandidateDS  
   - Deletes all CC objects that are not referenced by any FC object from CandidateDS  
-  - Calls v1-validation-orchestrator  
+  - Calls p1-validation-orchestrator  
   - IF ResponseCode==204  
     - Copies content of CandidateDS into RunningDS  
     - Responds 204 to requestor  
@@ -29,25 +29,25 @@ _would that comply with the status of the consuming application?)_
     - Responds ResponseCode to requestor  
 
 ### Validation  
-- v1-validation-orchestrator  
+- p1-validation-orchestrator  
   - Calls a configurable set of the TestFunctions listed below  
   - IF all ResponseCodes==204  
     - Responds 204  
     ELSE  
     - Responds the first ResponseCode different from 204 and terminates  
-- v1-ensure-unique-link-ids  
+- p1-ensure-unique-link-ids  
   Ensures that each LinkID is unique in the list of planned microwave links  
 
 _(further examples to be potentially removed by ApplicationOwner:)_
-- v1-prevent-redundant-fcs  
+- p1-prevent-redundant-fcs  
   Ensures that each pair of CCs is referenced by a maximum of one FC object  
-- v1-prevent-redundant-links  
+- p1-prevent-redundant-links  
   Ensures that each pair of AirInterface LTPs is referenced by a maximum of one Link object  
-- v1-ensure-every-fc-having-at-least-one-link
+- p1-ensure-every-fc-having-at-least-one-link
   Ensures that each FC object is referencing at least one Link object  
 
 ### Measurement  
-- v1-calculate-ltp-external-label (cyclic operation)  
+- p1-calculate-ltp-external-label (cyclic operation)  
   - Picks next FC object from rolling list in RunningDS  
   - Updates OperationalDS by reading the necessary information about all AirInterface LTPs and the Equipment of the referenced devices from MWDI  
   - IF device cannot be found in MWDI
@@ -75,11 +75,11 @@ _(further examples to be potentially removed by ApplicationOwner:)_
 - ./. (cyclic operation)  
 
 _(further examples to be potentially removed by ApplicationOwner:)_
-- v1-check-if-cc-external-label-equal-to-mount-point  
-- v1-check-if-operational-tx-power-is-below-planned  
+- p1-check-if-cc-external-label-equal-to-mount-point  
+- p1-check-if-operational-tx-power-is-below-planned  
 
 ### Implementation  
-- v1-implementation-orchestrator (cyclic operation)  
+- p1-implementation-orchestrator (cyclic operation)  
   - Picks next FC object from rolling list in CurrentAlarms  
   - Identifies errored object and checks dateOfNextAttemptToFix  
     - IF currentDate > dateOfNextAttemptToFix  
@@ -87,7 +87,7 @@ _(further examples to be potentially removed by ApplicationOwner:)_
       - Calls predefined ImplementationFunction depending on the ErrorCode and pastAttemptsToFix  
   - Documents response into pastAttemptsToFix
 
-- v1-update-ltp-external-label  
+- p1-update-ltp-external-label  
   - Reads calculatedLinkId attribute from Link and mountName + AirInterfaceUuid from AirInterface in OperationalDS
   - Sends PUT request to MWDG://live/mountName/AirInterfaceUuid/externalLabel with calculatedLinkId from Link in Operational  
     - IF ResponseCode==204

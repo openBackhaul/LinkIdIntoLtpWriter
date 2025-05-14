@@ -39,7 +39,7 @@ example:
   - _trigger-function: 'v1-add-planned-microwave-link' 
     sequence:
       - step-number: 0
-        _validation-function: 'v1-ensure-unique-link-ids'
+        _validation-function: 'p1-ensure-unique-link-ids'
       - step-number: 1
         _validation-function:
   - _trigger-function:
