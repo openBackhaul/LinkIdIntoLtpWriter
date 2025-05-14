@@ -83,19 +83,25 @@ _(further examples to be potentially removed by ApplicationOwner:)_
   - Picks next FC object from rolling list in CurrentAlarms  
   - Identifies errored object and checks dateOfNextAttemptToFix  
     - IF currentDate > dateOfNextAttemptToFix  
-      - Increments dateOfNextAttemptToFix  
-      - Calls predefined ImplementationFunction depending on the ErrorCode and pastAttemptsToFix  
-  - Documents response into pastAttemptsToFix
+      - Requests ImplementationFunction according definitions in ErrorCode table  
+      - Receives Response
+  - Restart cycle
 
 - p1-update-ltp-external-label  
   - Reads calculatedLinkId attribute from Link and mountName + AirInterfaceUuid from AirInterface in OperationalDS
   - Sends PUT request to MWDG://live/mountName/AirInterfaceUuid/externalLabel with calculatedLinkId from Link in Operational  
-    - IF ResponseCode==204
-      - Sends ResponseCode=204
-      ELSE
-      - Sends ErrorCode [to be defined#3]
+    - Documents date-of-attempt and response-code in past-attempts-to-fix in CurrentAlarms  
+    - IF ResponseCode==204  
+      - Documents date-of-next-attempt-to-fix in CurrentAlarms to a bit more remote future (so completion will certainly be measured before next attempt)  
+      ELSE  
+      - Documents date-of-next-attempt-to-fix also considering the history of attempts  
+  IF request was properly made, could be executed and result could be documented into CurrentAlarms  
+    - Returns ResponseCode=204 (independently from the ResponseCode of MWDG)  
+    ELSE  
+    - Returns a ResponseCode that relates to problems with executing the p1-update-ltp-external-label  
 
 ### Concepts for defining ImplementationFunctions  
+**Shaping**
 During discussions we found out that:  
 - With increasing number of deviations between RunningDS and OperationalDS some deadlock might occur.  
 - It is unclear how roll-back of partly executed implementation sequences could be defined in case of idempotent functions.  
@@ -104,3 +110,7 @@ The following concepts should help minimizing the risk of dead lock and partly e
 - Implementation sequences should be short (this is why the information structure is now limiting to a single function).  
 - Each implementation sequence shall terminate in a stable state more close to the target state defined in the RunningDS.  
 - Steps that are increasing the options in the total system (e.g. releasing limited resources) shall be done first. Steps that are narrowing down the options in the total system (e.g. allocating resources) shall be done in a separated sequence later.  
+
+**ResponseCode**
+The results of the implementation attempts shall be documented into the CurrentAlarms.  
+The ResponseCodes of the ImplementationFunctions shall relate to the processing of the request, not to the success or failure of the configuration task.  
