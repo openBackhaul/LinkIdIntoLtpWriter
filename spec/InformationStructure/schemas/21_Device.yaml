@@ -1,0 +1,44 @@
+control-construct:
+  type: array
+  x-key: element-name
+  items:
+    type: object
+    required:
+      - element-name
+      - logical-termination-point
+    properties:
+      element-name:
+        type: string
+        description: >
+          'MountName
+          candidate: from [LILW://v1/add-planned-microwave-link$request.body#mountNameA] and [LILW://v1/add-planned-microwave-link$request.body#mountNameB]
+          running: from candidate
+          operational: from [MWDI://core-model-1-4:network-control-domain=cache/control-construct={MountName}?fields=control-construct-pac(external-label)]
+      logical-termination-point:
+        type: array
+        x-key: local-id
+        minItems: 1
+        maxItems: 1
+        items:
+          type: object
+          required:
+            - local-id
+            - external-label
+          properties:
+            local-id:
+              type: string
+              description: >
+                'Identifier that is unique within the list of Interfaces
+                candidate: from [LILW://v1/add-planned-microwave-link$request.body#linkId]
+                running: from candidate
+                operational: from [MWDI://core-model-1-4:network-control-domain=cache/control-construct={MountName}?fields=logical-termination-point(uuid) for MWDI://core-model-1-4:network-control-domain=cache/control-construct={MountName}?fields=logical-termination-point(layer-protocol(layer-protocol-name))==LAYER_PROTOCOL_NAME_TYPE_AIR_LAYER]
+            external-label:
+              type: string
+              description: >
+                'LinkId as it got assigned in the planning data (CandidateDS and RunningDS), respectively as it is currently configured in the device (OperationalDS)
+                candidate: from [LILW://v1/add-planned-microwave-link$request.body#linkId]
+                running: from candidate
+                operational: from [MWDI://core-model-1-4:network-control-domain=cache/control-construct={MountName}/logical-termination-point={uuid}/ltp-augment-1-0:ltp-augment-pac/external-label]
+            planning-data:
+              type: object
+              description: 'to be defined according to the needs of the algorithms for pairing the planned microwave links with live network devices'

@@ -1,0 +1,104 @@
+affected-link:
+  type: array
+  x-key: _affected-link
+  description: > 
+    'List of Links that have problems
+    All references (_affected-link, _affected-cc, _affected-ltp) relate to objects in RunningDS'
+  items:
+    type: object
+    required:
+      - _affected-link
+      - affected-cc
+    properties:
+      _affected-link:
+        type: string
+        description: 'local-id of the Link that has problems (value must be unique and invariant)'
+      priority-band:
+        type: string
+        enum:
+          - 'high'
+          - 'medium'
+          - 'low'
+          - 'very low'
+      affected-cc:
+        type: array
+        x-key: _affected-cc
+        minItems: 1
+        description: 'List of ControlConstructs (devices) that have problems'
+        items:
+          type: object
+          minProperties: 2
+          required:
+            - _affected-cc
+          properties:
+            _affected-cc:
+              type: string
+              description: 'element-name of a ControlConstruct that has problems (value must be unique and invariant)'
+            error:
+              type: array
+              x-key: _error-code
+              minItems: 1
+              description: 'error attribute exclusively occurs, if there is at least one error directly associated with the CC'
+              items:
+                $ref: "#/components/schemas/errorDescription"
+            affected-ltp:
+              type: array
+              x-key: _affected-ltp
+              minItems: 1
+              description: >
+                'List of LogicalTerminationPoints (AirInterfaces) that have problems
+                affected-ltp attribute exclusively occurs, if there is at least one LTP affected by an error'
+              items:
+                type: object
+                required:
+                  - _affected-ltp
+                  - error
+                properties:
+                  _affected-ltp:
+                    type: string
+                    description: 'local-id of the LogicalTerminationPoint that has problems (value must be unique and invariant)'
+                  error:
+                    type: array
+                    x-key: _error-code
+                    minItems: 1
+                    description: 'If there is an affected LTP, there is at least one error'
+                    items:
+                      $ref: "#/components/schemas/errorDescription"
+components:
+  schemas:
+    errorDescription:
+      type: object
+      required:
+        - _error-code
+        - date-of-creation
+        - past-attempts-to-fix
+        - date-of-next-attempt-to-fix
+      properties:
+        _error-code:
+          type: integer
+          description: 'error-code of the definition of the problem in context of this application (value must be unique and invariant)'
+        date-of-creation:
+          type: string
+          pattern: '^\d{4}-\d{2}-\d{2}T\d{2}:\d{2}:\d{2}(\.\d+)?(Z|[\+\-]\d{2}:\d{2})$'
+          description: 'Date and time when this problem has been detected'
+        past-attempts-to-fix:
+          type: array
+          x-key: date-of-attempt
+          description: 'List of past attempts to fix the problem'
+          items:
+            type: object
+            required:
+              - date-of-attempt
+              - response-code
+            properties:
+              date-of-attempt:
+                type: string
+                pattern: '^\d{4}-\d{2}-\d{2}T\d{2}:\d{2}:\d{2}(\.\d+)?(Z|[\+\-]\d{2}:\d{2})$'
+                description: 'Date and time when it was attempted to fix the problem'
+              response-code:
+                type: integer
+                description: 'Code that resulted from the attempt to fix the problem'
+        date-of-next-attempt-to-fix:
+          type: string
+          pattern: '^\d{4}-\d{2}-\d{2}T\d{2}:\d{2}:\d{2}(\.\d+)?(Z|[\+\-]\d{2}:\d{2})$'
+          description: 'Next attempt to fix this problem shall not be made before this date'

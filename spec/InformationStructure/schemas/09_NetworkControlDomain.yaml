@@ -1,0 +1,54 @@
+network-control-domain:
+  type: array
+  x-key: storage
+  items:
+    type: object
+    required:
+      - storage
+      - profile
+      - control-construct
+      - link
+      - forwarding-domain
+    properties:
+      storage:
+        type: string
+        enum:
+          - 'candidate'
+          - 'startup'
+          - 'running'
+          - 'operational'
+        description: 'NMDA like data storages that document the NetworkControlDomain'
+      control-construct:
+        type: array
+        x-key: element-name
+        items:
+          type: object
+          description: 'ControlConstruct - see 21_Device.yaml'    
+      link:
+        type: array
+        x-key: local-id
+        items:
+          type: object
+          description: 'Link - see 22_AirLink.yaml'    
+      forwarding-domain:
+        type: array
+        x-key: forwarding-domain-name
+        minItems: 1
+        maxItems: 1
+        items:
+          type: object
+          description: 'network'
+          required:
+            - forwarding-domain-name
+            - forwarding-construct
+          properties:
+            forwarding-domain-name:
+              type: string
+              enum:
+                - 'network'
+            forwarding-construct:
+              type: array
+              x-key: local-id
+              items:
+                type: object
+                description: 'ForwardingConstruct - see 23_NetworkConnection.yaml'

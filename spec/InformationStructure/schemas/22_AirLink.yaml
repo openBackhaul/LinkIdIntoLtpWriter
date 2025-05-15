@@ -1,0 +1,98 @@
+link:
+  type: array
+  x-key: local-id
+  items:
+    oneOf:
+      - description: 'CandidateDS, RunningDS and StartupDS'
+        type: object
+        required:
+          - local-id
+          - linktp
+        properties:
+          local-id:
+            type: string
+            description: >
+              'LinkId (value must be unique and invariant)
+              candidate: from [/v1/add-planned-microwave-link$request.body#link-id]
+              running: from candidate'
+          linktp:
+            type: array
+            x-key: _cc
+            minItems: 2
+            maxItems: 2
+            items:
+              type: object
+              required:
+                - _cc
+                - _ltp
+              properties:
+                _cc:
+                  type: string
+                  description: >
+                    'MountName
+                    candidate: from [LILW://v1/add-planned-microwave-link$request.body#mountNameA and ./mountNameB]
+                    running: from candidate'
+                _ltp:
+                  type: string
+                  description: >
+                    'LinkId
+                    candidate: from [LILW://v1/add-planned-microwave-link$request.body#linkId]
+                    running: from candidate'
+      - description: 'OperationalDS'
+        type: object
+        required:
+          - local-id
+          - linktp
+          - scores
+          - calculated-link-id
+        properties:
+          local-id:
+            type: string
+            description: >
+              'Identifier that is unique within the list of Links
+              operational: string that is unique within the scope of the list'
+          linktp:
+            type: array
+            x-key: _cc
+            minItems: 2
+            maxItems: 2
+            items:
+              type: object
+              required:
+                - _cc
+                - _ltp
+              properties:
+                _cc:
+                  type: string
+                  description: >
+                    'MountName
+                    operational: from [MWDI://core-model-1-4:network-control-domain=cache/control-construct={MountName}?fields=control-construct-pac(external-label)]'
+                _ltp:
+                  type: string
+                  description: >
+                    'LinkId
+                    operational: from [v1-calculate-ltp-external-label reading MWDI://core-model-1-4:network-control-domain=cache/control-construct={MountName}?fields=logical-termination-point(uuid) for MWDI://core-model-1-4:network-control-domain=cache/control-construct={MountName}?fields=logical-termination-point(layer-protocol(layer-protocol-name))==LAYER_PROTOCOL_NAME_TYPE_AIR_LAYER]'
+          scores:
+            type: array
+            x-key: link-id
+            minItems: 1
+            items:
+              type: object
+              required:
+                - link-id
+                - candidate-score
+              properties:
+                link-id:
+                  type: string
+                  description: >
+                    'LinkId
+                    operational: from [v1-calculate-ltp-external-label]'
+                candidate-score:
+                  description: >
+                    'Probability of being the right LinkId of the connection between the referenced two LTPs
+                    operational: from [v1-calculate-ltp-external-label]'
+          calculated-link-id:
+            type: string
+            description: >
+              'Most likely LinkId of the connection between the referenced two LTPs
+              operational: from [v1-calculate-ltp-external-label]'

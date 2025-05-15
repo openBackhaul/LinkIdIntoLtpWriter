@@ -1,5 +1,11 @@
 # LinkIdIntoLtpWriter Specification
 
+### InformationStructure  
+- Introduction and detailed specification of the [Internal Information Structure](./InformationStructure/InformationStructure.md) of the LILW  
+
+### ListOfFunctions  
+- High level considerations on the [Functions](./ListOfFunctions/ListOfFunctions.md) of the LILW
+
 ### ServiceList
 - [LinkIdIntoLtpWriter+services](./LinkIdIntoLtpWriter+services.yaml)
 
