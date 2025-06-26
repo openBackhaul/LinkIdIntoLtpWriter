@@ -1,0 +1,20 @@
+error-code:
+  # The following definitions have been transferred from somewhere else
+  # ApplicationOwner is free to delete and modify as wished
+  # (Please delete this comment after reading)
+
+  - error-code: 601
+    description: 'OperationalDS::Ltp::externalLabel contains wrong value'
+    _implementation-function: 'p1-delete-external-label'
+  - error-code: 602
+    description: 'OperationalDS::Ltp::externalLabel does not contain value of OperationalDS::Link::calculatedLinkId'
+    _implementation-function: 'p1-copy-calculated-linkid-to-external-label'
+  - error-code:
+    description:
+    _implementation-function:
+  - error-code:
+    description:
+    _implementation-function:
+  - error-code:
+    description:
+    _implementation-function:
