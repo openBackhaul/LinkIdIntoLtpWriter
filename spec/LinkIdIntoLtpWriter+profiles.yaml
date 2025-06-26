@@ -52,4 +52,5 @@ profiles:
       upper-limit: integer
       lower-limit: integer
       cooldown-period: integer
+
 ## TODO: Add further Profile definitions, if required

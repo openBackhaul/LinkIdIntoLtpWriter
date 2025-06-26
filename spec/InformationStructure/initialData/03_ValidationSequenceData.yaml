@@ -3,7 +3,7 @@ validation-sequence:
 # Exact validations sequences are to be defined by ApplicationOwner
 # (Please, delete this comment after reading)
 
-  - _trigger-function: 'v1-add-planned-microwave-link' 
+  - _trigger-function: 'v1-add-planned-microwave-link'
     sequence:
       - step-number: 0
         _validation-function: 'p1-ensure-unique-link-ids'

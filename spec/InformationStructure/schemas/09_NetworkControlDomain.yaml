@@ -23,13 +23,13 @@ network-control-domain:
         x-key: element-name
         items:
           type: object
-          description: 'ControlConstruct - see 21_Device.yaml'    
+          description: 'ControlConstruct - see 21_Device.yaml'
       link:
         type: array
         x-key: local-id
         items:
           type: object
-          description: 'Link - see 22_AirLink.yaml'    
+          description: 'Link - see 22_AirLink.yaml'
       forwarding-domain:
         type: array
         x-key: forwarding-domain-name

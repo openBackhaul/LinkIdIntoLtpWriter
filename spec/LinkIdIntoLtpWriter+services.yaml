@@ -312,7 +312,7 @@ clients:
             uuid: lilw-1-0-0-op-c-is-mwdi-1-1-2-211
           - operation-name: /core-model-1-4:network-control-domain=live/control-construct={mount-name}/logical-termination-point={uuid}/layer-protocol={local-id}/air-interface-2-0:air-interface-pac/air-interface-status
             uuid: lilw-1-0-0-op-c-is-mwdi-1-1-2-512
-  
+
   - http-client:
       application-name: MicroWaveDeviceGatekeeper
       release-number: 1.0.2
@@ -333,10 +333,10 @@ clients:
   ##    - operation-name: /core-model-1-4:network-control-domain=live/control-construct={mountName}/equipment-augment-1-0:control-construct-pac/external-label
   ##      uuid: lilw-1-0-0-op-c-is-mwdg-1-0-2-000
 
-        - operation-name: /core-model-1-4:network-control-domain=live/control-construct={mountName}/logical-termination-point={uuid}/ltp-augment-1-0:ltp-augment-pac/external-label
-          uuid: lilw-1-0-0-op-c-is-mwdg-1-0-2-001
-        - operation-name: /core-model-1-4:network-control-domain=live/control-construct={mountName}/logical-termination-point={uuid}/layer-protocol={localId}/air-interface-2-0:air-interface-pac/air-interface-configuration/transmitter-is-on
-          uuid: lilw-1-0-0-op-c-is-mwdg-1-0-2-002
+          - operation-name: /core-model-1-4:network-control-domain=live/control-construct={mountName}/logical-termination-point={uuid}/ltp-augment-1-0:ltp-augment-pac/external-label
+            uuid: lilw-1-0-0-op-c-is-mwdg-1-0-2-001
+          - operation-name: /core-model-1-4:network-control-domain=live/control-construct={mountName}/logical-termination-point={uuid}/layer-protocol={localId}/air-interface-2-0:air-interface-pac/air-interface-configuration/transmitter-is-on
+            uuid: lilw-1-0-0-op-c-is-mwdg-1-0-2-002
 
 
        ## Following services do not yet exist
@@ -361,8 +361,7 @@ clients:
       service:
         basic:
         individual:
-        - operation-name: /v1/write-link-id-into-ltp
-          uuid: lilw-1-0-0-op-c-is-lilw-1-0-0-000
-        - operation-name: /v1/remove-link-id-from-queue-and-ltps
-          uuid: lilw-1-0-0-op-c-is-lilw-1-0-0-001
-
+          - operation-name: /v1/write-link-id-into-ltp
+            uuid: lilw-1-0-0-op-c-is-lilw-1-0-0-000
+          - operation-name: /v1/remove-link-id-from-queue-and-ltps
+            uuid: lilw-1-0-0-op-c-is-lilw-1-0-0-001

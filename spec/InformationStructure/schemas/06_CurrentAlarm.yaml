@@ -1,7 +1,7 @@
 affected-link:
   type: array
   x-key: _affected-link
-  description: > 
+  description: >
     'List of Links that have problems
     All references (_affected-link, _affected-cc, _affected-ltp) relate to objects in RunningDS'
   items:
