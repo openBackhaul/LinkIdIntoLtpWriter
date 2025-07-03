@@ -10,9 +10,8 @@ function:
     properties:
       function-name:
         type: string
-        pattern: '^(v[0-9]{1,2})((-[a-z]{1,}){1,})$'
-        description: 'In case of externally available services, the syntax of the path has to be translated to fit the pattern'
-        example: 'v1-add-planned-microwave-link'
+        description: 'operationId (from the OAS) that is uniquely identifying the module in the implementation'
+        example: 'establishManagementPlaneTransport'
       function-description:
         type: string
         description: 'Description of the Function'
@@ -37,28 +36,3 @@ function:
             parameter-definition:
               type: string
               description: 'Invariant description of the parameter'
-example:
-  - function-name:
-    function-description:
-    parameter:
-      - parameter-name:
-        parameter-value:
-        parameter-definition:
-  - function-name:
-    function-description:
-    parameter:
-      - parameter-name:
-        parameter-value:
-        parameter-definition:
-  - function-name:
-    function-description:
-    parameter:
-      - parameter-name:
-        parameter-value:
-        parameter-definition:
-  - function-name:
-    function-description:
-    parameter:
-      - parameter-name:
-        parameter-value:
-        parameter-definition:

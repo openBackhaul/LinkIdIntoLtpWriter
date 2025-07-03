@@ -1,0 +1,29 @@
+validation-sequence:
+# See the following entries as examples
+# Exact validations sequences are to be defined by ApplicationOwner
+# (Please, delete this comment after reading)
+
+  - _trigger-function: 'v1-add-planned-microwave-link'
+    sequence:
+      - step-number: 0
+        _validation-function: 'p1-ensure-unique-link-ids'
+      - step-number: 1
+        _validation-function:
+  - _trigger-function:
+    sequence:
+      - step-number: 0
+        _validation-function:
+      - step-number: 1
+        _validation-function:
+  - _trigger-function:
+    sequence:
+      - step-number: 0
+        _validation-function:
+      - step-number: 1
+        _validation-function:
+  - _trigger-function:
+    sequence:
+      - step-number: 0
+        _validation-function:
+      - step-number: 1
+        _validation-function:

@@ -121,7 +121,6 @@ profile-instances:
       integer-value: 1
 
 
-
   - profile-name: 'StringProfile'
     uuid: 'xx-1-0-0-string-p-???'
     capability:

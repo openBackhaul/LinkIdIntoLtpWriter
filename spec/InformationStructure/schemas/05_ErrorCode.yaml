@@ -1,7 +1,7 @@
 error-code:
   type: array
   x-key: error-code
-  description: 'List of ErrorCodes with descriptions and corresponding ImplementationFunction'
+  description: 'List of ErrorCodes with their description and corresponding ImplementationFunction'
   items:
     type: object
     required:
@@ -12,9 +12,8 @@ error-code:
         type: integer
         description: >
           'Code for identifying the finding (value must be unique and invariant)
-          400-599: Standard response codes are preferably to be used for responding and notifying to external
-          600-899: Self-defined response codes can be used also for responding and notifying to external, but re-use across applications must be managed via the documentation of the ApplicationPattern
-          900-999: Self-defined response codes can be used for internal management, without alignment between applications'
+          Values between 600 and 999 can be freely used and without harmonization
+          for expressing findings by the MeasurementFunctions, respectively for triggering ImplementationFunctions'
       description:
         type: string
         description: >
@@ -24,20 +23,6 @@ error-code:
         type: string
         description: >
           'Only applicable for internal codes
+          Reference towards an entry in the list of Functions
+          Only Functions for executing a change on the managed elements are allowed to be referenced
           Ideally, each internal code would be handled by a function'
-example:
-  - error-code: 601
-    description: 'OperationalDS::Ltp::externalLabel contains wrong value'
-    _implementation-function: 'p1-delete-external-label'
-  - error-code: 602
-    description: 'OperationalDS::Ltp::externalLabel does not contain value of OperationalDS::Link::calculatedLinkId'
-    _implementation-function: 'p1-copy-calculated-linkid-to-external-label'
-  - error-code:
-    description:
-    _implementation-function:
-  - error-code:
-    description:
-    _implementation-function:
-  - error-code:
-    description:
-    _implementation-function:
